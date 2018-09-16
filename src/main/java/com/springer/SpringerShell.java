@@ -41,6 +41,11 @@ public final class SpringerShell {
   private final Map<String, CommandHandler> commandHandlerMap;
 
   /**
+   * Current canvas instance.
+   */
+  private Canvas canvas;
+
+  /**
    * SpringerShell constructor could be called only from this class.
    */
   private SpringerShell() {
@@ -48,6 +53,7 @@ public final class SpringerShell {
      commandHandlerMap =
          Collections.unmodifiableMap(new HashMap<String, CommandHandler>() {{
            put("Q", new ReflectiveCommandHandler<>(commands, "Q"));
+           put("C", new ReflectiveCommandHandler<>(commands, "C"));
          }});
   }
 
@@ -56,7 +62,7 @@ public final class SpringerShell {
    */
   public static void main(final String[] args) {
     SpringerShell shell = new SpringerShell();
-    if (args == null) {
+    if (args == null || args.length == 0) {
       shell.start(System.in);
     } else if (args.length == 1) {
       if (Files.exists(Paths.get(args[0]))) {
@@ -78,10 +84,13 @@ public final class SpringerShell {
    * @param inputStream input stream to work with
    */
   private void start(final InputStream inputStream) {
+    // Unfortunately {@link java.util.Scanner} could not explicitly detect
+    // end of file. However files are used here only for test purposes and there
+    // is nothing about them in initial requirements
     try (Scanner scanner = new Scanner(inputStream)) {
       while (!exit) {
         try {
-          outputStream.write("enter command: ".getBytes());
+          outputStream.write(getPrompt().getBytes());
           String line;
           while (!scanner.hasNext()) {
             Thread.sleep(SLEEP_TIME);
@@ -108,7 +117,7 @@ public final class SpringerShell {
           if (commandHandler != null) {
             commandHandler.execute(line);
           } else {
-            errorStream.println("Unknown command: " + commandName);
+            outputStream.println("Unknown command: " + commandName);
           }
         } catch (IOException | InterruptedException e) {
           e.printStackTrace();
@@ -118,9 +127,56 @@ public final class SpringerShell {
   }
 
   /**
+   * Prompt.
+   * @return prompt string.
+   */
+  private String getPrompt() {
+    return "enter command: ";
+  }
+
+  /**
    * Exit.
    */
   public void exit() {
     exit = true;
+  }
+
+  /**
+   * Create new canvas for the shell with the specified width and height.
+   * @param w       width of the canvas
+   * @param h       height of the canvas
+   */
+  public void createBoard(final int w, final int h) {
+    this.canvas = new Canvas(w, h);
+  }
+
+  /**
+   * Print current canvas. Print null if canvas is null.
+   */
+  public void printCanvas() {
+    output(String.valueOf(canvas));
+  }
+
+  /**
+   * Print the specified message to the console and add a new line in the end.
+   *
+   * @param msg     the message to print
+   */
+  public void output(final String msg) {
+    output(msg, true);
+  }
+
+  /**
+   * Print the specified message to the console.
+   *
+   * @param msg     the message to print
+   * @param newline if false, do not append a newline
+   */
+  public void output(final String msg, final boolean newline) {
+    if (newline) {
+      outputStream.println(msg);
+    } else {
+      outputStream.print(msg);
+    }
   }
 }

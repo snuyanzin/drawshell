@@ -3,6 +3,8 @@ package com.springer;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.junit.Rule;
+import org.junit.rules.Timeout;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,6 +16,12 @@ import java.io.IOException;
  */
 public class SpringerShellTest
     extends TestCase {
+  /**
+   * 10 seconds max per method tested
+   */
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(10);
+
   /**
    * Create the test case
    *
@@ -33,7 +41,6 @@ public class SpringerShellTest
   /**
    * Test for Q command
    */
-  @org.junit.Test(timeout = 1)
   public void testExit() throws IOException {
     File tmpHistoryFile = File.createTempFile("Qcommand", "temp");
     try (BufferedWriter bw =
