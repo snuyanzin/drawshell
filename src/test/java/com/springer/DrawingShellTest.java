@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Unit test for simple DrawingShell.
  */
-public class SpringerShellTest
+public class DrawingShellTest
     extends TestCase {
   /**
    * 10 seconds max per method tested
@@ -27,7 +27,7 @@ public class SpringerShellTest
    *
    * @param testName name of the test case
    */
-  public SpringerShellTest(String testName) {
+  public DrawingShellTest(String testName) {
     super(testName);
   }
 
@@ -35,7 +35,7 @@ public class SpringerShellTest
    * @return the suite of tests being tested
    */
   public static Test suite() {
-    return new TestSuite(SpringerShellTest.class);
+    return new TestSuite(DrawingShellTest.class);
   }
 
   /**

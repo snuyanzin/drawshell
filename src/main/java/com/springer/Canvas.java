@@ -1,6 +1,5 @@
 package com.springer;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -162,9 +161,9 @@ public class Canvas {
    * initial color (different from the target one).
    * @param pointsToUpdate  initial collection of points to update
    * @param initialColor    color that should be changed
-   * @param targetColor        new color
+   * @param targetColor     new color
    */
-  private void updateColorNeighbours(final Collection<Integer> pointsToUpdate,
+  private void updateColorNeighbours(Set<Integer> pointsToUpdate,
                                      final char initialColor,
                                      final char targetColor) {
     if (pointsToUpdate.isEmpty() || initialColor == targetColor) {
@@ -173,29 +172,33 @@ public class Canvas {
     // each time the max number of candidates will increase 4 times
     // (3 potential candidates to change their color: 1 dedicated
     // and two shared with other points)
-    Set<Integer> candidates = new HashSet<>(pointsToUpdate.size() * 4);
-    for (int i : pointsToUpdate) {
-      canvasBoard[i] = targetColor;
-      // check lower point
-      if (i + width < canvasBoard.length
-          && canvasBoard[i + width] == initialColor) {
-        candidates.add(i + width);
-      }
-      // check upper point
-      if (i - width >= 0 && canvasBoard[i - width] == initialColor) {
-        candidates.add(i - width);
-      }
-      // check left point
-      if (i > 0 && i / width == (i - 1) / width
-          && canvasBoard[i - 1] == initialColor) {
-        candidates.add(i - 1);
-      }
-      // check right point
-      if (i / width == (i + 1) / width && canvasBoard[i + 1] == initialColor) {
-        candidates.add(i + 1);
-      }
+
+    while (!pointsToUpdate.isEmpty()) {
+        Set<Integer> candidates = new HashSet<>(pointsToUpdate.size() * 4);
+        for (int i : pointsToUpdate) {
+            canvasBoard[i] = targetColor;
+            // check lower point
+            if (i + width < canvasBoard.length
+                    && canvasBoard[i + width] == initialColor) {
+                candidates.add(i + width);
+            }
+            // check upper point
+            if (i - width >= 0 && canvasBoard[i - width] == initialColor) {
+                candidates.add(i - width);
+            }
+            // check left point
+            if (i > 0 && i / width == (i - 1) / width
+                    && canvasBoard[i - 1] == initialColor) {
+                candidates.add(i - 1);
+            }
+            // check right point
+            if (i / width == (i + 1) / width && canvasBoard[i + 1] == initialColor) {
+                candidates.add(i + 1);
+            }
+        }
+        pointsToUpdate = candidates;
     }
-    updateColorNeighbours(candidates, initialColor, targetColor);
+    //return updateColorNeighbours(candidates, initialColor, targetColor);
   }
 
   /**
@@ -205,7 +208,9 @@ public class Canvas {
    */
   @Override
   public String toString() {
-    StringBuilder result = new StringBuilder((width + 2) * (height + 2));
+    // +2 because of 2 boundaries both horizontal and vertical
+    // +3 for height because of besides boundaries there is an additional '\n' at the end of line
+    StringBuilder result = new StringBuilder((width + 2) * (height + 3));
     appendHorizontalBoundary(result);
     if (width + 2 > 0) {
       result.append("\n");

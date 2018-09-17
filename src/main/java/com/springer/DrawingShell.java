@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -50,11 +51,11 @@ public final class DrawingShell {
 
      commandHandlerMap =
          Collections.unmodifiableMap(new HashMap<String, CommandHandler>() {{
-           put("B", new ReflectiveCommandHandler<>(commands, "B"));
-           put("C", new ReflectiveCommandHandler<>(commands, "C"));
-           put("L", new ReflectiveCommandHandler<>(commands, "L"));
-           put("R", new ReflectiveCommandHandler<>(commands, "R"));
-           put("Q", new ReflectiveCommandHandler<>(commands, "Q"));
+           put("B", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "B"));
+           put("C", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "C"));
+           put("L", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "L"));
+           put("R", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "R"));
+           put("Q", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "Q"));
          }});
   }
 
@@ -121,8 +122,8 @@ public final class DrawingShell {
           } else {
             output("Unknown command: " + commandName);
           }
-        } catch (Exception e) {
-          e.printStackTrace();
+        } catch (Throwable t) {
+          handleException(t);
         }
       }
     }
@@ -184,5 +185,12 @@ public final class DrawingShell {
     } else {
       outputStream.print(msg);
     }
+  }
+
+  public void handleException(Throwable e) {
+    while (e instanceof InvocationTargetException) {
+      e = ((InvocationTargetException) e).getTargetException();
+    }
+    e.printStackTrace(errorStream);
   }
 }

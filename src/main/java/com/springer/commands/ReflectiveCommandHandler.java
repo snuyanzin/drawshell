@@ -1,6 +1,7 @@
 package com.springer.commands;
 
 import com.springer.CommandHandler;
+import com.springer.DrawingShell;
 
 /**
  * A {@link CommandHandler} implementation that
@@ -9,6 +10,10 @@ import com.springer.CommandHandler;
  */
 public class ReflectiveCommandHandler<T extends Commands>
     implements CommandHandler {
+  /**
+   * Instance of {@link DrawingShell} where the command is defined.
+   */
+  private final DrawingShell shell;
   /**
    * Instance of a class where the command is defined.
    */
@@ -24,10 +29,12 @@ public class ReflectiveCommandHandler<T extends Commands>
    * @param commandsInstance commands instance
    * @param name name of the command
    */
-  public ReflectiveCommandHandler(final T commandsInstance,
+  public ReflectiveCommandHandler(final DrawingShell drawingShell,
+                                  final T commandsInstance,
                                   final String name) {
     this.loweredCommandName = name.toLowerCase();
     this.commands = commandsInstance;
+    this.shell = drawingShell;
   }
 
   /**
@@ -48,9 +55,8 @@ public class ReflectiveCommandHandler<T extends Commands>
     try {
       commands.getClass().getMethod(getName(), String.class)
           .invoke(commands, line);
-    } catch (Throwable e) {
-      e.printStackTrace();
+    } catch (Throwable t) {
+      shell.handleException(t);
     }
   }
-
 }

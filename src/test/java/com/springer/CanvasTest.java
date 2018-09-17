@@ -87,7 +87,7 @@ public class CanvasTest extends TestCase {
         + "-----", cnvs.toString());
   }
 
-  public void testPutRectangle() {
+  public void testDrawRectangle() {
     Canvas cnvs = new Canvas(0,  0);
     cnvs.drawRectangle(0, 0, 0, 0);
     assertEquals("--\n--", cnvs.toString());
