@@ -169,11 +169,13 @@ public class Canvas {
     if (pointsToUpdate.isEmpty() || initialColor == targetColor) {
       return;
     }
-    // each time the max number of candidates will increase 4 times
-    // (3 potential candidates to change their color: 1 dedicated
-    // and two shared with other points)
 
+    // Not a recursion here as recursion leads to StackOverFlow
+    // for Canvas 9000x9000 and higher dimensions.
     while (!pointsToUpdate.isEmpty()) {
+        // each time the max number of candidates will increase 4 times
+        // (3 potential candidates to change their color: 1 dedicated
+        // and two shared with other points)
         Set<Integer> candidates = new HashSet<>(pointsToUpdate.size() * 4);
         for (int i : pointsToUpdate) {
             canvasBoard[i] = targetColor;
@@ -198,7 +200,6 @@ public class Canvas {
         }
         pointsToUpdate = candidates;
     }
-    //return updateColorNeighbours(candidates, initialColor, targetColor);
   }
 
   /**

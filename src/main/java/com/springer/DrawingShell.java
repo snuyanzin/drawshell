@@ -10,17 +10,21 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 /**
  * A shell for drawing on text canvas.
  */
 public final class DrawingShell {
-
+  private static final ResourceBundle RESOURCE_BUNDLE =
+      ResourceBundle.getBundle("DrawingShell");
   /**
    * Flag to show should leave while cycle.
    */
@@ -53,6 +57,7 @@ public final class DrawingShell {
          Collections.unmodifiableMap(new HashMap<String, CommandHandler>() {{
            put("B", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "B"));
            put("C", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "C"));
+           put("H", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "H"));
            put("L", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "L"));
            put("R", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "R"));
            put("Q", new ReflectiveCommandHandler<>(DrawingShell.this, commands, "Q"));
@@ -75,7 +80,6 @@ public final class DrawingShell {
           e.printStackTrace();
         }
       }
-
     } else {
       shell.errorStream.println("Usage");
     }
@@ -95,6 +99,7 @@ public final class DrawingShell {
           output(getPrompt(), false);
           String line;
           line = scanner.nextLine();
+
           if (!System.in.equals(inputStream)) {
             output(line);
           }
@@ -120,7 +125,7 @@ public final class DrawingShell {
               commandHandler.execute(line.substring(line.indexOf(commandName) + commandName.length() + 1));
             }
           } else {
-            output("Unknown command: " + commandName);
+            output(getLocMessage("unknown-command", commandName));
           }
         } catch (Throwable t) {
           handleException(t);
@@ -192,5 +197,19 @@ public final class DrawingShell {
       e = ((InvocationTargetException) e).getTargetException();
     }
     e.printStackTrace(errorStream);
+  }
+
+  public String getLocMessage(String res, Object ... params) {
+    try {
+      return MessageFormat.format(RESOURCE_BUNDLE.getString(res), params);
+    } catch (Exception e) {
+      e.printStackTrace(errorStream);
+
+      try {
+        return res + ": " + Arrays.toString(params);
+      } catch (Exception e2) {
+        return res;
+      }
+    }
   }
 }

@@ -45,7 +45,7 @@ public class DrawingShellTest
     File tmpHistoryFile = File.createTempFile("Qcommand", "temp");
     try (BufferedWriter bw =
         new BufferedWriter(new FileWriter(tmpHistoryFile))) {
-      bw.write("Q");
+      bw.write("Q             ");
       bw.flush();
     }
     tmpHistoryFile.deleteOnExit();

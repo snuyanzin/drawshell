@@ -28,11 +28,19 @@ public final class GeneralCommands implements Commands {
    */
   public void q(final String line) {
     String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
-    if (parts.length > 1) {
-      shell.output("Usage: Q");
+    if (parts.length > 0 && !parts[0].isEmpty() ) {
+      shell.output(shell.getLocMessage("usage-q"));
       return;
     }
     shell.exit();
+  }
+
+  /**
+   * Command H.
+   * @param line    full command line.
+   */
+  public void h(final String line) {    
+    shell.output(shell.getLocMessage("help"));
   }
 
   /**
@@ -42,7 +50,7 @@ public final class GeneralCommands implements Commands {
   public void c(final String line) {
     String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
     if (parts.length != 2) {
-      shell.output("Usage: C <w> <h>");
+      shell.output(shell.getLocMessage("usage-c"));
       return;
     }
     int w, h;
@@ -50,13 +58,11 @@ public final class GeneralCommands implements Commands {
       w = Integer.parseInt(parts[0]);
       h = Integer.parseInt(parts[1]);
     } catch (NumberFormatException nfe) {
-      shell.output(
-          "Usage: C <w> <h>. Where w and h must be non-negative numbers");
+      shell.output(shell.getLocMessage("usage-c"));
       return;
     }
     if (w < 0 || h < 0) {
-      shell.output(
-          "Usage: C <w> <h>. Where w and h must be non-negative numbers");
+      shell.output(shell.getLocMessage("usage-c"));
       return;
     }
     shell.createBoard(w, h);
@@ -69,20 +75,19 @@ public final class GeneralCommands implements Commands {
    */
   public void l(final String line) {
     if (shell.getCanvas() == null) {
-      shell.output("Canvas should be created first");
+      shell.output(shell.getLocMessage("canvas-required"));
       return;
     }
     String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
     if (parts.length != 4) {
-      shell.output("Usage: L <x1> <y1> <x2> <y2>");
+      shell.output(shell.getLocMessage("usage-l"));
       return;
     }
     int[] args;
     try {
       args = validateIfNumbers(parts);
     } catch (NumberFormatException nfe) {
-      shell.output(
-          "Usage: L <x1> <y1> <x2> <y2>. Where x1, x2, y1, y2 must be integer numbers");
+      shell.output(shell.getLocMessage("usage-l"));
       return;
     }
     shell.output(shell.getCanvas().drawLine(args[0], args[1], args[2], args[3]).toString());
@@ -94,20 +99,19 @@ public final class GeneralCommands implements Commands {
    */
   public void r(final String line) {
     if (shell.getCanvas() == null) {
-      shell.output("Canvas should be created first");
+      shell.output(shell.getLocMessage("canvas-required"));
       return;
     }
     String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
     if (parts.length != 4) {
-      shell.output("Usage: R <x1> <y1> <x2> <y2>");
+      shell.output(shell.getLocMessage("usage-r"));
       return;
     }
     int[] args;
     try {
       args = validateIfNumbers(parts);
     } catch (NumberFormatException nfe) {
-      shell.output(
-          "Usage: R <x1> <y1> <x2> <y2>. Where x1, x2, y1, y2 must be integer numbers");
+      shell.output(shell.getLocMessage("usage-r"));
       return;
     }
     shell.output(shell.getCanvas().drawRectangle(args[0], args[1], args[2], args[3]).toString());
@@ -119,7 +123,7 @@ public final class GeneralCommands implements Commands {
    */
   public void b(final String line) {
     if (shell.getCanvas() == null) {
-      shell.output("Canvas should be created first");
+      shell.output(shell.getLocMessage("canvas-required"));
       return;
     }
     String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
