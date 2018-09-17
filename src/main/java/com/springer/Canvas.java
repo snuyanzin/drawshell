@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Canvas to draw with on it.
@@ -67,14 +68,28 @@ public class Canvas {
    * @param y2      y coordinate  of the second point
    * @return        canvas with a new line.
    */
-  public Canvas putLine(final int x1, final int y1, final int x2, final int y2, final char c) {
+  public Canvas drawLine(final int x1, final int y1, final int x2, final int y2, final char c) {
+    // check if any point of the line should be on the canvas or not
+    if (Math.min(x1, x2) > width || Math.max(x1, x2) < 1
+            || Math.min(y1, y2) > height || Math.max(y1, y2) < 1) {
+      return this;
+    }
+    int end, start;
+    Function<Integer, Integer> function;
     if (x1 == x2) {
-      putVerticalLine(x1, y1, y2, c);
+      start = Math.max(0, Math.min(y1, y2) - 1);
+      end = Math.min(height, Math.max(y1, y2));
+      function = i -> width * i + x1 - 1;
     } else if (y1 == y2) {
-      putHorizontalLine(x1, x2, y1, c);
+      start = Math.max(0, Math.min(x1, x2) - 1);
+      end = Math.min(width, Math.max(x1, x2));
+      function = i -> (y1 - 1) * width + i;
     } else {
       throw new UnsupportedOperationException(
-          "Currently only horizontal and vertical are supported");
+          "Currently only horizontal and vertical lines are supported");
+    }
+    for (int i = start; i < end; i++) {
+      canvasBoard[function.apply(i)] = c;
     }
     return this;
   }
@@ -91,90 +106,8 @@ public class Canvas {
    * @param y2      y coordinate  of the second point
    * @return        canvas with a new line.
    */
-  public Canvas putLine(final int x1, final int y1, final int x2, final int y2) {
-    return putLine(x1, y1, x2, y2, DEFAULT_LINE_CHAR);
-  }
-
-  /**
-   * Draw vertical line on the canvas from
-   * the point (x, y1) to (x, y2) with symbol {@link Canvas#DEFAULT_LINE_CHAR}.
-   * If any point of the line is out of canvas this point will
-   * not be drawn while all points presenting on the canvas will be drawn
-   * @param x       x coordinate of the vertical line
-   * @param y1      y coordinate of the first point
-   * @param y2      y coordinate  of the second point
-   * @return        canvas with a new line.
-   */
-  public Canvas putVerticalLine(final int x, final int y1, final int y2) {
-    return putVerticalLine(x, y1, y2, DEFAULT_LINE_CHAR);
-  }
-
-  /**
-   * Draw vertical line on the canvas
-   * from the point (x, y1) to (x, y2) with symbol ch.
-   * If any point of the line is out of canvas this point will
-   * not be drawn while all points presenting on the canvas will be drawn
-   * @param x       x coordinate of the vertical line
-   * @param y1      y coordinate of the first point
-   * @param y2      y coordinate  of the second point
-   * @param ch      symbol to use while line drawing
-   * @return        canvas with a new line.
-   */
-  public Canvas putVerticalLine(final int x,
-                                final int y1,
-                                final int y2,
-                                final char ch) {
-    if (x < 1 || x > width
-        || Math.min(y1, y2) > height || Math.max(y1, y2) < 1) {
-      return this;
-    }
-    for (int i = Math.max(0, Math.min(y1, y2) - 1);
-        i < Math.min(height, Math.max(y1, y2));
-        i++) {
-      canvasBoard[width * i + x - 1] = ch;
-    }
-    return this;
-  }
-
-  /**
-   * Draw horizontal line on the canvas from
-   * the point (x1, y) to (x2, y) with symbol {@link Canvas#DEFAULT_LINE_CHAR}.
-   * If any point of the line is out of canvas this point will
-   * not be drawn while all points presenting on the canvas will be drawn
-   * @param x1      x coordinate of the first point
-   * @param x2      x coordinate of the second point
-   * @param y       coordinate of the horizontal line
-   * @return        canvas with a new line.
-   */
-  public Canvas putHorizontalLine(final int x1, final int x2, final int y) {
-    return putHorizontalLine(x1, x2, y, DEFAULT_LINE_CHAR);
-  }
-
-  /**
-   * Draw horizontal line on the canvas
-   * from the point (x1, y) to (x2, y) with symbol ch.
-   * If any point of the line is out of canvas this point will
-   * not be drawn while all points presenting on the canvas will be drawn
-   * @param x1      x coordinate of the first point
-   * @param x2      x coordinate of the second point
-   * @param y       coordinate of the horizontal line
-   * @param ch      symbol to use while line drawing
-   * @return        canvas with a new line.
-   */
-  public Canvas putHorizontalLine(final int x1,
-                                  final int x2,
-                                  final int y,
-                                  final char ch) {
-    if (Math.max(x1, x2) < 1
-        || Math.min(x1, x2) > width || y > height || y < 1) {
-      return this;
-    }
-    for (int i = Math.max(0, Math.min(x1, x2) - 1);
-         i < Math.min(width, Math.max(x1, x2));
-         i++) {
-      canvasBoard[(y - 1) * width + i] = ch;
-    }
-    return this;
+  public Canvas drawLine(final int x1, final int y1, final int x2, final int y2) {
+    return drawLine(x1, y1, x2, y2, DEFAULT_LINE_CHAR);
   }
 
   /**
@@ -189,14 +122,14 @@ public class Canvas {
    * @param y2      y coordinate of the second point
    * @return        canvas with a new rectangle.
    */
-  public Canvas putRectangle(final int x1,
-                             final int y1,
-                             final int x2,
-                             final int y2) {
-    return putHorizontalLine(x1, x2, y1)
-      .putHorizontalLine(x1, x2, y2)
-      .putVerticalLine(x1, y1, y2)
-      .putVerticalLine(x2, y1, y2);
+  public Canvas drawRectangle(final int x1,
+                              final int y1,
+                              final int x2,
+                              final int y2) {
+    return drawLine(x1, y1, x2, y1)
+      .drawLine(x1, y2, x2, y2)
+      .drawLine(x1, y1, x1, y2)
+      .drawLine(x2, y1, x2, y2);
   }
 
   /**
@@ -225,41 +158,48 @@ public class Canvas {
 
   /**
    * Update color (char content) of all specified points and its neighbours
-   * and so forth while neighbours have the same initial color.
+   * and so forth while neighbours have the same
+   * initial color (different from the target one).
    * @param pointsToUpdate  initial collection of points to update
    * @param initialColor    color that should be changed
-   * @param newColor        new color
+   * @param targetColor        new color
    */
   private void updateColorNeighbours(final Collection<Integer> pointsToUpdate,
                                      final char initialColor,
-                                     final char newColor) {
-    if (pointsToUpdate.isEmpty() || initialColor == newColor) {
+                                     final char targetColor) {
+    if (pointsToUpdate.isEmpty() || initialColor == targetColor) {
       return;
     }
     // each time the max number of candidates will increase 4 times
+    // (3 potential candidates to change their color: 1 dedicated
+    // and two shared with other points)
     Set<Integer> candidates = new HashSet<>(pointsToUpdate.size() * 4);
     for (int i : pointsToUpdate) {
-      canvasBoard[i] = newColor;
+      canvasBoard[i] = targetColor;
+      // check lower point
       if (i + width < canvasBoard.length
           && canvasBoard[i + width] == initialColor) {
         candidates.add(i + width);
       }
+      // check upper point
       if (i - width >= 0 && canvasBoard[i - width] == initialColor) {
         candidates.add(i - width);
       }
+      // check left point
       if (i > 0 && i / width == (i - 1) / width
           && canvasBoard[i - 1] == initialColor) {
         candidates.add(i - 1);
       }
+      // check right point
       if (i / width == (i + 1) / width && canvasBoard[i + 1] == initialColor) {
         candidates.add(i + 1);
       }
     }
-    updateColorNeighbours(candidates, initialColor, newColor);
+    updateColorNeighbours(candidates, initialColor, targetColor);
   }
 
   /**
-   * Draw current canvas state.
+   * String representation of the current canvas state.
    *
    * @return canvas string representation
    */

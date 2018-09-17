@@ -85,7 +85,7 @@ public final class GeneralCommands implements Commands {
           "Usage: L <x1> <y1> <x2> <y2>. Where x1, x2, y1, y2 must be integer numbers");
       return;
     }
-    shell.output(shell.getCanvas().putLine(args[0], args[1], args[2], args[3]).toString());
+    shell.output(shell.getCanvas().drawLine(args[0], args[1], args[2], args[3]).toString());
   }
 
   /**
@@ -110,7 +110,7 @@ public final class GeneralCommands implements Commands {
           "Usage: R <x1> <y1> <x2> <y2>. Where x1, x2, y1, y2 must be integer numbers");
       return;
     }
-    shell.output(shell.getCanvas().putRectangle(args[0], args[1], args[2], args[3]).toString());
+    shell.output(shell.getCanvas().drawRectangle(args[0], args[1], args[2], args[3]).toString());
   }
 
   /**

@@ -19,156 +19,119 @@ public class CanvasTest extends TestCase {
     assertEquals("----\n|  |\n|  |\n----", new Canvas(2, 2).toString());
   }
 
-  public void testPutHorizontalLine() {
+  public void testDrawLine() {
     Canvas cnvs = new Canvas(0,  0);
-    cnvs.putHorizontalLine(0, 0, 0);
+    cnvs.drawLine(0, 0, 0, 0);
     assertEquals("--\n--", cnvs.toString());
 
     cnvs = new Canvas(1,  1);
-    cnvs.putHorizontalLine(0, 0, 0);
+    cnvs.drawLine(0, 0, 0, 0);
     assertEquals("---\n| |\n---", cnvs.toString());
 
+    // Line with the same end and start should be a point
     cnvs = new Canvas(1,  1);
-    cnvs.putHorizontalLine(1, 1, 1);
+    cnvs.drawLine(1, 1, 1, 1);
     assertEquals("---\n|x|\n---", cnvs.toString());
 
+    // The line outside of the canvas should not be drawn
     cnvs = new Canvas(1,  1);
-    cnvs.putHorizontalLine(-1, 10, 10);
+    cnvs.drawLine(-1, 10, 10, 10);
     assertEquals("---\n| |\n---", cnvs.toString());
 
+    // If a line starts or ends outside of the canvas but goes through
+    // some points of it then these points should be drawn
     cnvs = new Canvas(1,  1);
-    cnvs.putHorizontalLine(10, -1, 1);
+    cnvs.drawLine(10, 1, -1, 1);
     assertEquals("---\n|x|\n---", cnvs.toString());
 
+    // It does not matter if the is going to be drawn
+    // from the right to left or from the left to right
+    // the same approach in case of from the up to down or from the down to up
     assertEquals(
-        new Canvas(5, 5).putHorizontalLine(-30, 40, 4).toString(),
-        new Canvas(5, 5).putHorizontalLine(40, -30, 4).toString());
+        new Canvas(5, 5).drawLine(-30, 40, 4, 40).toString(),
+        new Canvas(5, 5).drawLine(4, 40, -30, 40).toString());
+    assertEquals(
+        new Canvas(5, 5).drawLine(-5, -10, -5, 40).toString(),
+        new Canvas(5, 5).drawLine(-5, 40, -5, -10).toString());
 
     cnvs = new Canvas(3,  3);
-    cnvs.putHorizontalLine(2, 10, 2);
+    cnvs.drawLine(2, 2, 10, 2);
     assertEquals("-----\n"
         + "|   |\n"
         + "| xx|\n"
         + "|   |\n"
         + "-----", cnvs.toString());
-    cnvs.putHorizontalLine(2, -10, 1, '*');
+    cnvs.drawLine(2, 1, -10, 1, '*');
     assertEquals("-----\n"
         + "|** |\n"
         + "| xx|\n"
         + "|   |\n"
         + "-----", cnvs.toString());
-    cnvs.putHorizontalLine(1, 1, 2, '&');
+    cnvs.drawLine(1, 2, 1, 3, '&');
     assertEquals("-----\n"
         + "|** |\n"
         + "|&xx|\n"
-        + "|   |\n"
+        + "|&  |\n"
         + "-----", cnvs.toString());
-    cnvs.putHorizontalLine(1, 3, 3);
+    cnvs.drawLine(1, 3, 3, 3);
     assertEquals("-----\n"
         + "|** |\n"
         + "|&xx|\n"
         + "|xxx|\n"
         + "-----", cnvs.toString());
-  }
-
-  public void testPutVerticalLine() {
-    Canvas cnvs = new Canvas(0,  0);
-    cnvs.putVerticalLine(0, 0, 0);
-    assertEquals("--\n--", cnvs.toString());
-
-    cnvs = new Canvas(1,  1);
-    cnvs.putVerticalLine(0, 0, 0);
-    assertEquals("---\n| |\n---", cnvs.toString());
-
-    cnvs = new Canvas(1,  1);
-    cnvs.putVerticalLine(1, 1, 1);
-    assertEquals("---\n|x|\n---", cnvs.toString());
-
-    cnvs = new Canvas(1,  1);
-    cnvs.putVerticalLine(-1, 10, 10);
-    assertEquals("---\n| |\n---", cnvs.toString());
-
-    cnvs = new Canvas(1,  1);
-    cnvs.putVerticalLine(1, 10, 1);
-    assertEquals("---\n|x|\n---", cnvs.toString());
-
-    assertEquals(
-        new Canvas(5, 5).putVerticalLine(2, 23, -12).toString(),
-        new Canvas(5, 5).putVerticalLine(2, -12, 23).toString());
-
-    cnvs = new Canvas(3,  3);
-    cnvs.putVerticalLine(2, 10, 2);
+    cnvs.drawLine(3, 3, 3, -5, '%');
     assertEquals("-----\n"
-        + "|   |\n"
-        + "| x |\n"
-        + "| x |\n"
-        + "-----", cnvs.toString());
-    cnvs.putVerticalLine(1, 1, 2, '*');
-    assertEquals("-----\n"
-        + "|*  |\n"
-        + "|*x |\n"
-        + "| x |\n"
-        + "-----", cnvs.toString());
-    cnvs.putVerticalLine(3, 1, 2, '&');
-    assertEquals("-----\n"
-        + "|* &|\n"
-        + "|*x&|\n"
-        + "| x |\n"
-        + "-----", cnvs.toString());
-    cnvs.putVerticalLine(1, 3, 3);
-    assertEquals("-----\n"
-        + "|* &|\n"
-        + "|*x&|\n"
-        + "|xx |\n"
+        + "|**%|\n"
+        + "|&x%|\n"
+        + "|xx%|\n"
         + "-----", cnvs.toString());
   }
-
 
   public void testPutRectangle() {
     Canvas cnvs = new Canvas(0,  0);
-    cnvs.putRectangle(0, 0, 0, 0);
+    cnvs.drawRectangle(0, 0, 0, 0);
     assertEquals("--\n--", cnvs.toString());
 
     cnvs = new Canvas(1,  1);
-    cnvs.putRectangle(0, 0, 0, 0);
+    cnvs.drawRectangle(0, 0, 0, 0);
     assertEquals("---\n| |\n---", cnvs.toString());
 
     cnvs = new Canvas(1,  1);
-    cnvs.putRectangle(1, 1, 1, 1);
+    cnvs.drawRectangle(1, 1, 1, 1);
     assertEquals("---\n|x|\n---", cnvs.toString());
 
     cnvs = new Canvas(1,  1);
-    cnvs.putRectangle(-1, 10, 10, -1);
+    cnvs.drawRectangle(-1, 10, 10, -1);
     assertEquals("---\n| |\n---", cnvs.toString());
 
     cnvs = new Canvas(1,  1);
-    cnvs.putRectangle(1, 10, 10, 1);
+    cnvs.drawRectangle(1, 10, 10, 1);
     assertEquals("---\n|x|\n---", cnvs.toString());
 
     assertEquals(
-        new Canvas(5, 5).putRectangle(2, 23, -12, -90).toString(),
-        new Canvas(5, 5).putRectangle(-12, -90, 2, 23).toString());
+        new Canvas(5, 5).drawRectangle(2, 23, -12, -90).toString(),
+        new Canvas(5, 5).drawRectangle(-12, -90, 2, 23).toString());
 
     cnvs = new Canvas(3,  3);
-    cnvs.putRectangle(1, -6, 3, 2);
+    cnvs.drawRectangle(1, -6, 3, 2);
     assertEquals("-----\n"
         + "|x x|\n"
         + "|xxx|\n"
         + "|   |\n"
         + "-----", cnvs.toString());
-    cnvs.putRectangle(2, 2, 2, 2);
+    cnvs.drawRectangle(2, 2, 2, 2);
     assertEquals("-----\n"
         + "|x x|\n"
         + "|xxx|\n"
         + "|   |\n"
         + "-----", cnvs.toString());
-    cnvs.putRectangle(2, 1, 2, 1);
+    cnvs.drawRectangle(2, 1, 2, 1);
     assertEquals("-----\n"
         + "|xxx|\n"
         + "|xxx|\n"
         + "|   |\n"
         + "-----", cnvs.toString());
-    cnvs.putRectangle(1, 3, 2, 3);
+    cnvs.drawRectangle(1, 3, 2, 3);
     assertEquals("-----\n"
         + "|xxx|\n"
         + "|xxx|\n"
@@ -198,7 +161,7 @@ public class CanvasTest extends TestCase {
         + "-----", cnvs.toString());
 
     cnvs = new Canvas(3,  3);
-    cnvs.putRectangle(1, -6, 3, 2);
+    cnvs.drawRectangle(1, -6, 3, 2);
     assertEquals("-----\n"
         + "|x x|\n"
         + "|xxx|\n"
