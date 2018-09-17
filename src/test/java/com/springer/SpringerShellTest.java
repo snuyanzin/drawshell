@@ -12,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Unit test for simple SpringerShell.
+ * Unit test for simple DrawingShell.
  */
 public class SpringerShellTest
     extends TestCase {
@@ -49,7 +49,7 @@ public class SpringerShellTest
       bw.flush();
     }
     tmpHistoryFile.deleteOnExit();
-    SpringerShell.main(new String[] {tmpHistoryFile.getAbsolutePath()});
+    DrawingShell.main(new String[] {tmpHistoryFile.getAbsolutePath()});
     assertTrue(true);
   }
 }

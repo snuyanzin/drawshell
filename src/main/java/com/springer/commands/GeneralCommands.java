@@ -1,6 +1,6 @@
 package com.springer.commands;
 
-import com.springer.SpringerShell;
+import com.springer.DrawingShell;
 
 import java.util.Arrays;
 
@@ -12,13 +12,13 @@ public final class GeneralCommands implements Commands {
   /**
    * Instance of the shell.
    */
-  private final SpringerShell shell;
+  private final DrawingShell shell;
 
   /**
    * Constructor.
    * @param springerShell instance of the shell.
    */
-  public GeneralCommands(final SpringerShell springerShell) {
+  public GeneralCommands(final DrawingShell springerShell) {
     this.shell = springerShell;
   }
 

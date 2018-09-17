@@ -18,7 +18,7 @@ import java.util.Scanner;
 /**
  * A shell for drawing on text canvas.
  */
-public final class SpringerShell {
+public final class DrawingShell {
 
   /**
    * Flag to show should leave while cycle.
@@ -43,9 +43,9 @@ public final class SpringerShell {
   private Canvas canvas;
 
   /**
-   * SpringerShell constructor could be called only from this class.
+   * DrawingShell constructor could be called only from this class.
    */
-  private SpringerShell() {
+  private DrawingShell() {
      final GeneralCommands commands = new GeneralCommands(this);
 
      commandHandlerMap =
@@ -62,7 +62,7 @@ public final class SpringerShell {
    * @param args startup args
    */
   public static void main(final String[] args) {
-    SpringerShell shell = new SpringerShell();
+    DrawingShell shell = new DrawingShell();
     if (args == null || args.length == 0) {
       shell.start(System.in);
     } else if (args.length == 1) {
