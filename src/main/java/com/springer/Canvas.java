@@ -55,6 +55,46 @@ public class Canvas {
     }
   }
 
+
+  /**
+   * Draw horizontal or vertical (based on points coordinates analysis) line
+   * on the canvas from the point (x, y1) to (x, y2) with symbol c.
+   * If any point of the line is out of canvas this point will
+   * not be drawn while all points presenting on the canvas will be drawn
+   * @param x1      x coordinate of the vertical line
+   * @param x2      x coordinate of the vertical line
+   * @param y1      y coordinate of the first point
+   * @param y2      y coordinate  of the second point
+   * @return        canvas with a new line.
+   */
+  public Canvas putLine(final int x1, final int y1, final int x2, final int y2, final char c) {
+    if (x1 == x2) {
+      putVerticalLine(x1, y1, y2, c);
+    } else if (y1 == y2) {
+      putHorizontalLine(x1, x2, y1, c);
+    } else {
+      throw new UnsupportedOperationException(
+          "Currently only horizontal and vertical are supported");
+    }
+    return this;
+  }
+
+  /**
+   * Draw horizontal or vertical (based on points coordinates analysis) line
+   * on the canvas from the point (x, y1) to (x, y2) with
+   * symbol {@link Canvas#DEFAULT_LINE_CHAR}.
+   * If any point of the line is out of canvas this point will
+   * not be drawn while all points presenting on the canvas will be drawn
+   * @param x1      x coordinate of the vertical line
+   * @param x2      x coordinate of the vertical line
+   * @param y1      y coordinate of the first point
+   * @param y2      y coordinate  of the second point
+   * @return        canvas with a new line.
+   */
+  public Canvas putLine(final int x1, final int y1, final int x2, final int y2) {
+    return putLine(x1, y1, x2, y2, DEFAULT_LINE_CHAR);
+  }
+
   /**
    * Draw vertical line on the canvas from
    * the point (x, y1) to (x, y2) with symbol {@link Canvas#DEFAULT_LINE_CHAR}.
@@ -66,8 +106,7 @@ public class Canvas {
    * @return        canvas with a new line.
    */
   public Canvas putVerticalLine(final int x, final int y1, final int y2) {
-    putVerticalLine(x, y1, y2, DEFAULT_LINE_CHAR);
-    return this;
+    return putVerticalLine(x, y1, y2, DEFAULT_LINE_CHAR);
   }
 
   /**
@@ -108,8 +147,7 @@ public class Canvas {
    * @return        canvas with a new line.
    */
   public Canvas putHorizontalLine(final int x1, final int x2, final int y) {
-    putHorizontalLine(x1, x2, y, DEFAULT_LINE_CHAR);
-    return this;
+    return putHorizontalLine(x1, x2, y, DEFAULT_LINE_CHAR);
   }
 
   /**

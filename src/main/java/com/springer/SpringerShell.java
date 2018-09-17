@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -19,10 +20,6 @@ import java.util.Scanner;
  */
 public final class SpringerShell {
 
-  /**
-   * Sleeping tie interval in millis to wait if no new command appears.
-   */
-  public static final long SLEEP_TIME = 100L;
   /**
    * Flag to show should leave while cycle.
    */
@@ -50,10 +47,14 @@ public final class SpringerShell {
    */
   private SpringerShell() {
      final GeneralCommands commands = new GeneralCommands(this);
+
      commandHandlerMap =
          Collections.unmodifiableMap(new HashMap<String, CommandHandler>() {{
-           put("Q", new ReflectiveCommandHandler<>(commands, "Q"));
+           put("B", new ReflectiveCommandHandler<>(commands, "B"));
            put("C", new ReflectiveCommandHandler<>(commands, "C"));
+           put("L", new ReflectiveCommandHandler<>(commands, "L"));
+           put("R", new ReflectiveCommandHandler<>(commands, "R"));
+           put("Q", new ReflectiveCommandHandler<>(commands, "Q"));
          }});
   }
 
@@ -90,14 +91,11 @@ public final class SpringerShell {
     try (Scanner scanner = new Scanner(inputStream)) {
       while (!exit) {
         try {
-          outputStream.write(getPrompt().getBytes());
+          output(getPrompt(), false);
           String line;
-          while (!scanner.hasNext()) {
-            Thread.sleep(SLEEP_TIME);
-          }
           line = scanner.nextLine();
           if (!System.in.equals(inputStream)) {
-            outputStream.write((line + "\n").getBytes());
+            output(line);
           }
           if (line == null) {
             continue;
@@ -115,11 +113,15 @@ public final class SpringerShell {
           }
           CommandHandler commandHandler = commandHandlerMap.get(commandName);
           if (commandHandler != null) {
-            commandHandler.execute(line);
+            if (Objects.equals(commandName, trimmedLine)) {
+              commandHandler.execute("");
+            } else {
+              commandHandler.execute(line.substring(line.indexOf(commandName) + commandName.length() + 1));
+            }
           } else {
-            outputStream.println("Unknown command: " + commandName);
+            output("Unknown command: " + commandName);
           }
-        } catch (IOException | InterruptedException e) {
+        } catch (Exception e) {
           e.printStackTrace();
         }
       }
@@ -148,6 +150,10 @@ public final class SpringerShell {
    */
   public void createBoard(final int w, final int h) {
     this.canvas = new Canvas(w, h);
+  }
+
+  public Canvas getCanvas() {
+    return canvas;
   }
 
   /**

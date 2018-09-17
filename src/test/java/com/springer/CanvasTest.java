@@ -211,17 +211,29 @@ public class CanvasTest extends TestCase {
         + "|   |\n"
         + "-----", cnvs.toString());
 
-    cnvs.fill(1, 3, '&');
+    cnvs.fill(1, 3, '-');
     assertEquals("-----\n"
         + "|x*x|\n"
         + "|xxx|\n"
-        + "|&&&|\n"
+        + "|---|\n"
+        + "-----", cnvs.toString());
+    cnvs.fill(3, 1, '|');
+    assertEquals("-----\n"
+        + "||*||\n"
+        + "|||||\n"
+        + "|---|\n"
         + "-----", cnvs.toString());
     cnvs.fill(3, 1, '#');
     assertEquals("-----\n"
         + "|#*#|\n"
         + "|###|\n"
-        + "|&&&|\n"
+        + "|---|\n"
+        + "-----", cnvs.toString());
+    cnvs.fill(3, 3, '^');
+    assertEquals("-----\n"
+        + "|#*#|\n"
+        + "|###|\n"
+        + "|^^^|\n"
         + "-----", cnvs.toString());
   }
 
