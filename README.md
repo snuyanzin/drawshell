@@ -8,6 +8,15 @@
 ```
 mvn package
 ```
+or
+- on Linux
+    ```
+    ./mvnw package
+    ```
+- on Windows
+    ```
+    mvnw.bat package
+    ```    
 It will create `drawingshell-1.0-SNAPSHOT.jar`. 
 ### Start
 There are several ways to start: 
