@@ -205,7 +205,8 @@ public final class DrawingShell {
    * @return prompt string.
    */
   private String getPrompt() {
-    return Loc.getLocMessage("prompt");
+    return Loc.getLocMessage(
+        canvas == null ? "create-canvas-prompt" : "prompt");
   }
 
   /**

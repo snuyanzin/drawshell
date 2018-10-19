@@ -70,11 +70,11 @@ There could be 2 ways of working with drawing shell
    this feature is also used in tests.
 2. Interactive shell mode. Below there is a sample of it.
 
-        enter command: C 0 2 
+        create canvas: C 0 2 
         Usage: C <w> <h>. Where w and h must be in a range [1..2,147,483,647].
         In case of huge values be sure you have enough memory for jvm heap.
         
-        enter command: C 20 2 
+        create canvas: C 20 2 
         ----------------------
         |                    |
         |                    |
@@ -113,7 +113,8 @@ There could be 2 ways of working with drawing shell
 
 ## Additional features and limitations
 
-1. Extra spaces are ignored that means that each of 2 commands:
+1. If there is no canvas exist then prompt is `create canvas: ` otherwise the prompt is `enter command: `.
+2. Extra spaces are ignored that means that each of 2 commands:
 
    command1
    ```
@@ -124,11 +125,11 @@ There could be 2 ways of working with drawing shell
                    L              1                   10            1               -5            
    ```
    will lead to the same result. While the second one looks awful it is still valid.
-2. If a part of the line or rectangle specified via `L` or `R` commands is out of defined canvas then only the part matching to the canvas position/sizes will be drawn.
+3. If a part of the line or rectangle specified via `L` or `R` commands is out of defined canvas then only the part matching to the canvas position/sizes will be drawn.
    Please have a look at demos section for more detailed.
-3. If while `B` command there is specified a point which is out of canvas then nothing will be filled. Warning message will be shown. Please have a look at demos section for more detailed.
-4. The commands with length of 1 Gb and more are not supported. If there is a requirement to have such feature supported it should be addressed to improvements section.
-5. There is a hardcoded limit `Integer.MAX_VALUE` for canvas size (however there is an option to change it). Thus there are only environment limitations, please have a look at the table with memory required for different canvas sizes above. 
+4. If while `B` command there is specified a point which is out of canvas then nothing will be filled. Warning message will be shown. Please have a look at demos section for more detailed.
+5. The commands with length of 1 Gb and more are not supported. If there is a requirement to have such feature supported it should be addressed to improvements section.
+6. There is a hardcoded limit `Integer.MAX_VALUE` for canvas size (however there is an option to change it). Thus there are only environment limitations, please have a look at the table with memory required for different canvas sizes above. 
    At the same side for example Photoshop has limitation [30000](https://helpx.adobe.com/photoshop-elements/kb/maximum-image-size-limits-photoshop.html).
    Also there are some ideas to improve it (in case it is really required) in improvements section.
 
@@ -154,11 +155,8 @@ There could be 2 ways of working with drawing shell
    for more detailed please have a look at [jline3](https://github.com/jline/jline3/wiki).
    There is also a progress bar for long operations could be helpful (could be based on existing from jline3).
 3. Being able to plug in new commands.
-4. Prompt customization. For instance commands `L`, `R`, `B` require created canvas
-   so it makes sense to have prompt of canvas creation e.g.
-   `create canvas:` instead of `enter command:` in case of not created canvas or something like this.
-5. As resource bundle is already in use there could be added localization support for whatever required locales.
-6. In case of having possibility so store results in files or whatever permanent storage
+4. As resource bundle is already in use there could be added localization support for whatever required locales.
+5. In case of having possibility so store results in files or whatever permanent storage
    it also would be nice to have possibility of saving part of heavy command work while it is in progress
    and to have a possibility to continue it from the last saved point (something similar to WAL files).
 ### Drawing related suggestions
