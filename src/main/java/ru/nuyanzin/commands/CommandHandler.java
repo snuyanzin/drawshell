@@ -1,4 +1,4 @@
-package com.springer;
+package ru.nuyanzin.commands;
 
 /**
  * A generic command to be executed. Execution of the command should be

@@ -1,4 +1,4 @@
-package com.springer.commands;
+package ru.nuyanzin.commands;
 
 /**
  * Commands marker interface.
