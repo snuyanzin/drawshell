@@ -182,12 +182,14 @@ public final class GeneralCommands implements Commands {
     }
     String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
     String commandLUsageMessage = Loc.getLocMessage("usage-l");
-    // length 4 as 4 arguments are required
-    if (parts.length != 4) {
+    // length 4 or 5 as 4 or 5 arguments are required
+    if ((parts.length != 4 && parts.length != 5)
+        || (parts.length == 5 && parts[4].length() > 1)) {
       shell.output(commandLUsageMessage);
       return;
     }
-    int[] args = parseIntegersOrThrow(commandLUsageMessage, parts);
+    int[] args = parseIntegersOrThrow(
+        commandLUsageMessage, Arrays.copyOfRange(parts, 0, 4));
     if (args == null) {
       // just return as exception message printed from parseIntegersOrThrow
       return;
@@ -201,7 +203,12 @@ public final class GeneralCommands implements Commands {
       // non horizontal and non vertical line detected
       shell.output(Loc.getLocMessage("draw-line-not-supported"));
     } else {
-      canvas.drawLine(x1, y1, x2, y2).printTo(shell.getOutput());
+      if (parts.length == 4) {
+        canvas.drawLine(x1, y1, x2, y2).printTo(shell.getOutput());
+      } else {
+        canvas.drawLine(x1, y1, x2, y2, parts[4].charAt(0))
+            .printTo(shell.getOutput());
+      }
     }
   }
 
@@ -232,18 +239,26 @@ public final class GeneralCommands implements Commands {
     }
     String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
     String commandRUsageMessage = Loc.getLocMessage("usage-r");
-    // length 4 as 4 arguments are required
-    if (parts.length != 4) {
+    // length 4 or 5 as 4 or 5 arguments are required
+    if ((parts.length != 4 && parts.length != 5)
+        || (parts.length == 5 && parts[4].length() > 1)) {
       shell.output(commandRUsageMessage);
       return;
     }
-    int[] args = parseIntegersOrThrow(commandRUsageMessage, parts);
+    int[] args = parseIntegersOrThrow(
+        commandRUsageMessage, Arrays.copyOfRange(parts, 0, 4));
     if (args == null) {
       // just return as exception message printed from parseIntegersOrThrow
       return;
     }
-    canvas.drawRectangle(args[0], args[1], args[2], args[3])
-        .printTo(shell.getOutput());
+    if (parts.length == 4) {
+      canvas.drawRectangle(args[0], args[1], args[2], args[3])
+          .printTo(shell.getOutput());
+    } else {
+      canvas.drawRectangle(
+          args[0], args[1], args[2], args[3], parts[4].charAt(0))
+              .printTo(shell.getOutput());
+    }
   }
 
   /**

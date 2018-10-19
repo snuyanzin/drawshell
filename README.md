@@ -46,7 +46,9 @@ It also depends on number of colors in use. The table below is made for 3 colors
 | `H`         | Print this help. |
 | `C w h`     | Create a new canvas of width w and height h. |
 | `L x1 y1 x2 y2` | Draw a line through points `(x1, y1)` to `(x2, y2)`. Currently only horizontal and vertical lines are supported. Horizontal and vertical lines will be drawn using `x` character. |
+| `L x1 y1 x2 y2 c` | The same as above but with color `c` specification. |
 | `R x1 y1 x2 y2` | Draw a new rectangle, whose one corner is `(x1, y1)` and another is `(x2, y2)` using `x` character. |
+| `R x1 y1 x2 y2 c` | The same as above but with color `c` specification. |
 | `B x y c` | Alias for `B4`. |
 | `B4 x y c` | Fill the entire area connected to `(x, y)` and having the same colour as `(x, y)` with colour `c`. 4-dots way of filling is used i.e. only side connections are taken into account while only corner connections will skipped. |
 | `B8 x y c` | Fill the entire area connected to `(x, y)` and having the same colour as `(x, y)` with colour `c`. 8-dots way of filling is used i.e. both side and corner connections are taken into account. |
@@ -92,10 +94,10 @@ There could be 2 ways of working with drawing shell
         |xxxxxx              |
         ----------------------
         
-        enter command: R 16 1 20 3
+        enter command: R 16 1 20 3 *
         ----------------------
-        |               xxxxx|
-        |xxxxxx         x   x|
+        |               *****|
+        |xxxxxx         *   *|
         ----------------------
         
         enter command: B 10 3 o
@@ -106,8 +108,8 @@ There could be 2 ways of working with drawing shell
         
         enter command: B 10 2 o
         ----------------------
-        |oooooooooooooooxxxxx|
-        |xxxxxxooooooooox   x|
+        |ooooooooooooooo*****|
+        |xxxxxxooooooooo*   *|
         ----------------------
         enter command: Q
 
@@ -160,15 +162,13 @@ There could be 2 ways of working with drawing shell
    it also would be nice to have possibility of saving part of heavy command work while it is in progress
    and to have a possibility to continue it from the last saved point (something similar to WAL files).
 ### Drawing related suggestions
-1. Being able to specify different symbol for line or rectangle drawing
-   (currently it is an easy-fix as it works but the api at the moment is not reachable via shell)
-2. Add more drawing related operations like any line (not only horizontal or vertical),
+1. Add more drawing related operations like any line (not only horizontal or vertical),
    circle, triangle, filled rectangles and other shapes, being able to fill not only area
    with the same but with the similar colours.
-3. Add possibility of run several commands without canvas output between them.
+2. Add possibility of run several commands without canvas output between them.
    At least it makes sense for the case of large canvas where each operation including output
    becomes more time consuming.
-4. Being able to save the current state of canvas and load it later from the file or other source.
+3. Being able to save the current state of canvas and load it later from the file or other source.
 ### Other
 1. Currently there is a limitation of `Integer.MAX_VALUE` (and environment/jvm heap/etc.) for width or height of canvas.
    It could be increased with increasing memory but anyway it will require

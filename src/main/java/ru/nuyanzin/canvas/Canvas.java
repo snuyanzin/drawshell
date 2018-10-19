@@ -183,6 +183,31 @@ public class Canvas {
   }
 
   /**
+   * Draw rectangle on the canvas
+   * with the top left point (x1, y1) and bottom right point (x2, y2)
+   * with symbol {@link Canvas#DEFAULT_LINE_CHAR}.
+   * If any point of the rectangle is out of canvas this point will
+   * not be drawn while all points presenting on the canvas will be drawn
+   *
+   * @param x1 x coordinate of the first point
+   * @param x2 x coordinate of the second point
+   * @param y1 y coordinate of the first point
+   * @param y2 y coordinate of the second point
+   * @param c  c color to draw rectangle
+   * @return canvas with a new rectangle.
+   */
+  public Canvas drawRectangle(final int x1,
+                              final int y1,
+                              final int x2,
+                              final int y2,
+                              final char c) {
+    return drawLine(x1, y1, x2, y1, c)
+        .drawLine(x1, y2, x2, y2, c)
+        .drawLine(x1, y1, x1, y2, c)
+        .drawLine(x2, y1, x2, y2, c);
+  }
+
+  /**
    * Return color-layer map-entry for the specified coordinate.
    *
    * @param x x coordinate
