@@ -19,8 +19,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <top.dir>${project.basedir}</top.dir>
 
     <!-- This list is in alphabetical order. -->
+    <checkstyle.version>7.8.2</checkstyle.version>
+    <forbiddenapis.version>2.6</forbiddenapis.version>
     <junit.version>4.12</junit.version>
     <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
@@ -97,6 +100,35 @@
           <version>${maven-deploy-plugin.version}</version>
         </plugin>
         <plugin>
+          <groupId>de.thetaphi</groupId>
+          <artifactId>forbiddenapis</artifactId>
+          <configuration>
+            <!-- if the used Java version is too new, don't fail, just do nothing: -->
+            <failOnUnsupportedJava>false</failOnUnsupportedJava>
+            <bundledSignatures>
+              <!--
+                This will automatically choose the right
+                signatures based on 'maven.compiler.target':
+              -->
+              <bundledSignature>jdk-unsafe</bundledSignature>
+              <bundledSignature>jdk-deprecated</bundledSignature>
+              <!-- disallow undocumented classes like sun.misc.Unsafe: -->
+              <bundledSignature>jdk-non-portable</bundledSignature>
+            </bundledSignatures>
+            <signaturesFiles>
+              <signaturesFile>${top.dir}/src/main/config/forbidden-apis/signatures.txt</signaturesFile>
+            </signaturesFiles>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>check</goal>
+                <goal>testCheck</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <executions>
@@ -104,9 +136,10 @@
               <id>validate</id>
               <phase>validate</phase>
               <configuration>
-                <configLocation>${basedir}/src/main/config/checkstyle/checker.xml</configLocation>
-                <suppressionsLocation>${basedir}/src/main/config/checkstyle/suppressions.xml</suppressionsLocation>
+                <configLocation>${top.dir}/src/main/config/checkstyle/checker.xml</configLocation>
+                <suppressionsLocation>${top.dir}/src/main/config/checkstyle/suppressions.xml</suppressionsLocation>
                 <consoleOutput>true</consoleOutput>
+                <headerLocation>${top.dir}/src/main/config/checkstyle/header.txt</headerLocation>
                 <failOnViolation>true</failOnViolation>
                 <includeTestSourceDirectory>true</includeTestSourceDirectory>
               </configuration>
@@ -115,6 +148,13 @@
               </goals>
             </execution>
           </executions>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${checkstyle.version}</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
