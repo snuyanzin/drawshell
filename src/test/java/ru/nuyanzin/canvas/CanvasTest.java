@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import ru.nuyanzin.DrawingShellOpts;
 
 /**
  * Unit tests for direct drawing on {@link Canvas}.
@@ -11,17 +12,19 @@ import junit.framework.TestCase;
  */
 public class CanvasTest extends TestCase {
 
+  private static final DrawingShellOpts OPTS = new DrawingShellOpts(null);
   public void testToString() {
     // 0 is not allowed from the shell but here there is no validation
-    assertEquals("--\n--\n", new Canvas(0, 0).toString());
-    assertEquals("---\n---\n", new Canvas(1, 0).toString());
-    assertEquals("--\n||\n--\n", new Canvas(0, 1).toString());
-    assertEquals("---\n| |\n---\n", new Canvas(1, 1).toString());
-    assertEquals("----\n|  |\n|  |\n----\n", new Canvas(2, 2).toString());
+    assertEquals("--\n--\n", new Canvas(0, 0, OPTS).toString());
+    assertEquals("---\n---\n", new Canvas(1, 0, OPTS).toString());
+    assertEquals("--\n||\n--\n", new Canvas(0, 1, OPTS).toString());
+    assertEquals("---\n| |\n---\n", new Canvas(1, 1, OPTS).toString());
+    assertEquals("----\n|  |\n|  |\n----\n",
+        new Canvas(2, 2, OPTS).toString());
   }
 
   public void testDrawLineOutCanvas() {
-    Canvas cnvs = new Canvas(3, 3);
+    Canvas cnvs = new Canvas(3, 3, OPTS);
     // Before drawing
     assertEquals("-----\n"
         + "|   |\n"
@@ -49,21 +52,23 @@ public class CanvasTest extends TestCase {
 
     // Out of canvas
     assertEquals(
-        new Canvas(2, 2).drawLine(20, 30, -100, 30).toString(),
-        new Canvas(2, 2).drawLine(-100, 30, 20, 30).toString());
+        new Canvas(2, 2, OPTS).drawLine(20, 30, -100, 30).toString(),
+        new Canvas(2, 2, OPTS).drawLine(-100, 30, 20, 30).toString());
 
     // On canvas
     assertEquals(
-        new Canvas(5, 5).drawRectangle(1, 2, 1, 5).toString(),
-        new Canvas(5, 5).drawRectangle(1, 5, 1, 2).toString());
+        new Canvas(5, 5, OPTS).drawRectangle(1, 2, 1, 5).toString(),
+        new Canvas(5, 5, OPTS).drawRectangle(1, 5, 1, 2).toString());
     assertEquals(
-        new Canvas(5, 5).drawRectangle(Integer.MIN_VALUE, 4, 5, 4).toString(),
-        new Canvas(5, 5).drawRectangle(5, 4, Integer.MIN_VALUE, 4).toString());
+        new Canvas(5, 5, OPTS)
+            .drawRectangle(Integer.MIN_VALUE, 4, 5, 4).toString(),
+        new Canvas(5, 5, OPTS)
+            .drawRectangle(5, 4, Integer.MIN_VALUE, 4).toString());
   }
 
   public void testLineAsAPoint() {
     // A line with the same two points should be a point
-    Canvas cnvs = new Canvas(3, 3);
+    Canvas cnvs = new Canvas(3, 3, OPTS);
     cnvs.drawLine(2, 2, 2, 2);
     assertEquals("-----\n"
         + "|   |\n"
@@ -97,7 +102,7 @@ public class CanvasTest extends TestCase {
   }
 
   public void testDrawLine() {
-    Canvas cnvs = new Canvas(4, 4);
+    Canvas cnvs = new Canvas(4, 4, OPTS);
     cnvs.drawLine(1, 1, 2, 1);
     assertEquals("------\n"
         + "|xx  |\n"
@@ -130,7 +135,7 @@ public class CanvasTest extends TestCase {
   }
 
   public void testDrawRectangleOutCanvas() {
-    Canvas cnvs = new Canvas(3, 3);
+    Canvas cnvs = new Canvas(3, 3, OPTS);
     // Before drawing
     assertEquals("-----\n"
         + "|   |\n"
@@ -159,30 +164,30 @@ public class CanvasTest extends TestCase {
 
     // Out of canvas
     assertEquals(
-        new Canvas(2, 2).drawRectangle(2, 23, -12, -90).toString(),
-        new Canvas(2, 2).drawRectangle(-12, -90, 2, 23).toString());
+        new Canvas(2, 2, OPTS).drawRectangle(2, 23, -12, -90).toString(),
+        new Canvas(2, 2, OPTS).drawRectangle(-12, -90, 2, 23).toString());
     assertEquals(
-        new Canvas(2, 2).drawRectangle(2, -90, -12, 23).toString(),
-        new Canvas(2, 2).drawRectangle(-12, -90, 2, 23).toString());
+        new Canvas(2, 2, OPTS).drawRectangle(2, -90, -12, 23).toString(),
+        new Canvas(2, 2, OPTS).drawRectangle(-12, -90, 2, 23).toString());
     assertEquals(
-        new Canvas(2, 2).drawRectangle(-12, 23, 2, -90).toString(),
-        new Canvas(2, 2).drawRectangle(-12, -90, 2, 23).toString());
+        new Canvas(2, 2, OPTS).drawRectangle(-12, 23, 2, -90).toString(),
+        new Canvas(2, 2, OPTS).drawRectangle(-12, -90, 2, 23).toString());
 
     // On canvas
     assertEquals(
-        new Canvas(5, 5).drawRectangle(1, 2, 4, 5).toString(),
-        new Canvas(5, 5).drawRectangle(4, 5, 1, 2).toString());
+        new Canvas(5, 5, OPTS).drawRectangle(1, 2, 4, 5).toString(),
+        new Canvas(5, 5, OPTS).drawRectangle(4, 5, 1, 2).toString());
     assertEquals(
-        new Canvas(5, 5).drawRectangle(4, 2, 1, 5).toString(),
-        new Canvas(5, 5).drawRectangle(4, 5, 1, 2).toString());
+        new Canvas(5, 5, OPTS).drawRectangle(4, 2, 1, 5).toString(),
+        new Canvas(5, 5, OPTS).drawRectangle(4, 5, 1, 2).toString());
     assertEquals(
-        new Canvas(5, 5).drawRectangle(1, 5, 4, 2).toString(),
-        new Canvas(5, 5).drawRectangle(4, 5, 1, 2).toString());
+        new Canvas(5, 5, OPTS).drawRectangle(1, 5, 4, 2).toString(),
+        new Canvas(5, 5, OPTS).drawRectangle(4, 5, 1, 2).toString());
   }
 
   public void testRectangleAsAPoint() {
     // rectangle with the same two opposite corners should be a point
-    Canvas cnvs = new Canvas(3, 3);
+    Canvas cnvs = new Canvas(3, 3, OPTS);
     cnvs.drawRectangle(2, 2, 2, 2);
     assertEquals("-----\n"
         + "|   |\n"
@@ -216,7 +221,7 @@ public class CanvasTest extends TestCase {
   }
 
   public void testDrawRectangleAsALine() {
-    Canvas cnvs = new Canvas(5, 5);
+    Canvas cnvs = new Canvas(5, 5, OPTS);
     cnvs.drawRectangle(1, 1, 2, 1);
     assertEquals("-------\n"
         + "|xx   |\n"
@@ -244,7 +249,7 @@ public class CanvasTest extends TestCase {
   }
 
   public void testDrawRectangles() {
-    Canvas cnvs = new Canvas(5, 5);
+    Canvas cnvs = new Canvas(5, 5, OPTS);
     cnvs.drawRectangle(Integer.MIN_VALUE, Integer.MIN_VALUE, 2, 2);
     assertEquals("-------\n"
         + "| x   |\n"
@@ -283,17 +288,17 @@ public class CanvasTest extends TestCase {
   }
 
   public void testFill1() {
-    Canvas cnvs = new Canvas(Integer.MAX_VALUE, 1);
+    Canvas cnvs = new Canvas(Integer.MAX_VALUE, 1, OPTS);
     cnvs.fill(Integer.MAX_VALUE, 1, '.');
   }
 
   public void testFill() {
-    Canvas cnvs = new Canvas(1, 1);
+    Canvas cnvs = new Canvas(1, 1, OPTS);
     // Fill one element canvas
     cnvs.fill(1, 1, '>');
     assertEquals("---\n|>|\n---\n", cnvs.toString());
 
-    cnvs = new Canvas(3, 3);
+    cnvs = new Canvas(3, 3, OPTS);
     // non-keyboard symbol check
     cnvs.fill(1, 2, 'π');
     assertEquals("-----\n"
@@ -302,7 +307,7 @@ public class CanvasTest extends TestCase {
         + "|πππ|\n"
         + "-----\n", cnvs.toString());
 
-    cnvs = new Canvas(3, 3);
+    cnvs = new Canvas(3, 3, OPTS);
     // fill a hole of one element
     cnvs.drawRectangle(1, -6, 3, 2);
     assertEquals("-----\n"
@@ -347,7 +352,7 @@ public class CanvasTest extends TestCase {
   }
 
   public void testFillWithExistingColor() {
-    Canvas cnvs = new Canvas(3, 3);
+    Canvas cnvs = new Canvas(3, 3, OPTS);
     cnvs.drawLine(2, 1, 2, 3);
     assertEquals("-----\n"
         + "| x |\n"
@@ -374,7 +379,7 @@ public class CanvasTest extends TestCase {
    * if the canvas filled correctly.
    */
   public void testB8Fill() {
-    Canvas cnvs = new Canvas(6, 7);
+    Canvas cnvs = new Canvas(6, 7, OPTS);
     cnvs.drawLine(1, 2, 1, 3);
     cnvs.drawLine(1, 5, 1, 6);
     cnvs.drawLine(6, 2, 6, 3);
@@ -434,7 +439,7 @@ public class CanvasTest extends TestCase {
   public void testFillB4Maze() {
     int mazeWidth = 20;
     int mazeHeight = 20;
-    Canvas cnvs = new Canvas(mazeWidth, mazeHeight);
+    Canvas cnvs = new Canvas(mazeWidth, mazeHeight, OPTS);
     cnvs.drawLine(2, 2, 2, 10);
     cnvs.drawLine(2, 2, 9, 2);
     cnvs.drawLine(9, 2, 9, 8);
@@ -560,7 +565,7 @@ public class CanvasTest extends TestCase {
   public void testB8FillMaze() {
     int mazeWidth = 20;
     int mazeHeight = 20;
-    Canvas cnvs = new Canvas(mazeWidth, mazeHeight);
+    Canvas cnvs = new Canvas(mazeWidth, mazeHeight, OPTS);
     cnvs.drawLine(1, 1, 1, 1);
     cnvs.drawLine(20, 1, 20, 1);
     cnvs.drawLine(1, 20, 1, 20);
@@ -700,7 +705,7 @@ public class CanvasTest extends TestCase {
   public void testFillB8ChessBoard() {
     int chessBoardWidth = 8;
     int chessBoardHeight = 8;
-    Canvas cnvs = new Canvas(chessBoardWidth, chessBoardHeight);
+    Canvas cnvs = new Canvas(chessBoardWidth, chessBoardHeight, OPTS);
     cnvs.drawLine(1, 1, 1, 1);
     cnvs.drawLine(3, 1, 3, 1);
     cnvs.drawLine(5, 1, 5, 1);
@@ -792,7 +797,7 @@ public class CanvasTest extends TestCase {
    * while calling fill (4-dots approach) at each non-blank point.
    */
   public void testFillB4Board() {
-    Canvas cnvs = new Canvas(8, 8);
+    Canvas cnvs = new Canvas(8, 8, OPTS);
     cnvs.drawLine(1, 1, 1, 1);
     cnvs.drawLine(3, 1, 3, 1);
     cnvs.drawLine(5, 1, 5, 1);

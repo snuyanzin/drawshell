@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import ru.nuyanzin.DrawingShellOpts;
+import ru.nuyanzin.properties.DrawingShellPropertiesEnum;
+
 /**
  * Canvas to draw with on it.
  */
@@ -24,17 +27,11 @@ public class Canvas {
   private static final int STRING_LENGTH_FOR_FLUSHING = 5000000;
 
   /**
-   * Default symbol to draw horizontal boundary.
-   */
-  private static final String DEFAULT_HORIZONTAL_BOUNDARY = "-";
-  /**
-   * Default symbol to draw vertical boundary.
-   */
-  private static final String DEFAULT_VERTICAL_BOUNDARY = "|";
-  /**
    * Default symbol to draw lines and rectangles.
    */
   private static final char DEFAULT_LINE_CHAR = 'x';
+
+  private final DrawingShellOpts drawingShellOpts;
 
   /**
    * Default symbol for initial background.
@@ -55,12 +52,13 @@ public class Canvas {
    */
   private final int height;
 
-  public Canvas(final int width, final int height) {
+  public Canvas(final int width, final int height, DrawingShellOpts opts) {
     this.height = height;
     this.width = width;
     colorToLayerMap = new HashMap<>();
     colorToLayerMap.put(DEFAULT_LINE_CHAR, new Layer(width, height));
     colorToLayerMap.put(DEFAULT_EMPTY_CHAR, new EmptyLayer(width, height));
+    this.drawingShellOpts = opts;
   }
 
   /**
@@ -321,7 +319,8 @@ public class Canvas {
   public void printTo(final Appendable appendable) throws IOException {
     StringBuilder sb = new StringBuilder(STRING_LENGTH_FOR_FLUSHING);
     for (int i = 0; i < width + 2; i++) {
-      sb.append(DEFAULT_HORIZONTAL_BOUNDARY);
+      sb.append(
+          drawingShellOpts.get(DrawingShellPropertiesEnum.HORIZONTAL_BORDER));
       if (sb.length() >= STRING_LENGTH_FOR_FLUSHING - 1) {
         appendable.append(sb.toString());
         sb = new StringBuilder(STRING_LENGTH_FOR_FLUSHING);
@@ -333,7 +332,8 @@ public class Canvas {
       sb = lineToAppendable(appendable, sb, i);
     }
     for (int i = 0; i < width + 2; i++) {
-      sb.append(DEFAULT_HORIZONTAL_BOUNDARY);
+      sb.append(
+          drawingShellOpts.get(DrawingShellPropertiesEnum.HORIZONTAL_BORDER));
       if (sb.length() >= STRING_LENGTH_FOR_FLUSHING) {
         appendable.append(sb.toString());
         sb = new StringBuilder(STRING_LENGTH_FOR_FLUSHING);
@@ -353,7 +353,7 @@ public class Canvas {
   private StringBuilder lineToAppendable(Appendable appendable,
                                          StringBuilder sb,
                                          int lineNumber) throws IOException {
-    sb.append(DEFAULT_VERTICAL_BOUNDARY);
+    sb.append(drawingShellOpts.get(DrawingShellPropertiesEnum.VERTICAL_BORDER));
     int cursor = 0;
     while (cursor < width) {
       Map.Entry<Character, Layer> color2LineEntry =
@@ -385,7 +385,8 @@ public class Canvas {
         }
       }
     }
-    sb.append(DEFAULT_VERTICAL_BOUNDARY).append("\n");
+    sb.append(drawingShellOpts.get(DrawingShellPropertiesEnum.VERTICAL_BORDER))
+        .append("\n");
     return sb;
   }
 

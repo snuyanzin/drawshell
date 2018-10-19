@@ -53,6 +53,8 @@ public final class DrawingShell {
    */
   private Canvas canvas;
 
+  private final DrawingShellOpts opts;
+
   /**
    * DrawingShell constructor could be called only from this class.
    *
@@ -81,9 +83,12 @@ public final class DrawingShell {
                 DrawingShell.this, commands, "L"));
             put("R", new ReflectiveCommandHandler<>(
                 DrawingShell.this, commands, "R"));
+            put("SET", new ReflectiveCommandHandler<>(
+                DrawingShell.this, commands, "SET"));
             put("Q", new ReflectiveCommandHandler<>(
                 DrawingShell.this, commands, "Q"));
           }});
+    opts = new DrawingShellOpts(this);
   }
 
   /**
@@ -227,7 +232,7 @@ public final class DrawingShell {
     // it will allow to recreate large canvas (with default jvm settings)
     // e.g. C 25000 25000 and then again C 25000 25000
     this.canvas = null;
-    this.canvas = new Canvas(w, h);
+    this.canvas = new Canvas(w, h, opts);
   }
 
   public Canvas getCanvas() {
@@ -276,5 +281,9 @@ public final class DrawingShell {
       e = ((InvocationTargetException) e).getTargetException();
     }
     e.printStackTrace(outputStream);
+  }
+
+  public DrawingShellOpts getOpts() {
+    return opts;
   }
 }

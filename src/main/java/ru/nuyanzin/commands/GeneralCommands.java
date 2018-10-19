@@ -4,8 +4,13 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ru.nuyanzin.DrawingShell;
+import ru.nuyanzin.DrawingShellOpts;
 import ru.nuyanzin.Loc;
 import ru.nuyanzin.canvas.Canvas;
 
@@ -258,6 +263,33 @@ public final class GeneralCommands implements Commands {
       canvas.drawRectangle(
           args[0], args[1], args[2], args[3], parts[4].charAt(0))
               .printTo(shell.getOutput());
+    }
+  }
+
+  /**
+   * Command SET for setting properties.
+   *
+   * @param line full command line
+   */
+  public void set(final String line) throws IOException {
+    String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
+    String commandSETUsageMessage = Loc.getLocMessage("usage-set");
+    // length 2 arguments are required
+    if (parts.length != 2 && parts.length != 0
+        && !(parts.length == 1 && parts[0].isEmpty())) {
+      shell.output(commandSETUsageMessage);
+      return;
+    }
+    if (parts.length <= 1) {
+      Properties props = shell.getOpts().toProperties();
+      Set<String> keys = new TreeSet<>(((Map) props).keySet());
+      for (String key : keys) {
+        shell.output(
+            key.substring(DrawingShellOpts.PROPERTY_PREFIX.length())
+                + "\t" + props.getProperty(key));
+      }
+    } else {
+      shell.getOpts().set(parts[0], parts[1]);
     }
   }
 

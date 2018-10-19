@@ -52,6 +52,8 @@ It also depends on number of colors in use. The table below is made for 3 colors
 | `B x y c` | Alias for `B4`. |
 | `B4 x y c` | Fill the entire area connected to `(x, y)` and having the same colour as `(x, y)` with colour `c`. 4-dots way of filling is used i.e. only side connections are taken into account while only corner connections will skipped. |
 | `B8 x y c` | Fill the entire area connected to `(x, y)` and having the same colour as `(x, y)` with colour `c`. 8-dots way of filling is used i.e. both side and corner connections are taken into account. |
+| `SET` | Show all existing properties with its values. |
+| `SET p v` | Assign property `p` value `v`. |
 | `Q` | Quit the program. |
                         
 ## Demos
@@ -72,11 +74,11 @@ There could be 2 ways of working with drawing shell
    this feature is also used in tests.
 2. Interactive shell mode. Below there is a sample of it.
 
-        create canvas: C 0 2 
+        create canvas or enter command: C 0 2 
         Usage: C <w> <h>. Where w and h must be in a range [1..2,147,483,647].
         In case of huge values be sure you have enough memory for jvm heap.
         
-        create canvas: C 20 2 
+        create canvas or enter command: C 20 2 
         ----------------------
         |                    |
         |                    |
@@ -88,16 +90,16 @@ There could be 2 ways of working with drawing shell
         |xxxxxx              |
         ----------------------
         
-        enter command: L 6 3 6 4
+        enter command: L 8 2 14 2 @
         ----------------------
         |                    |
-        |xxxxxx              |
+        |xxxxxx @@@@@@@      |
         ----------------------
         
         enter command: R 16 1 20 3 *
         ----------------------
         |               *****|
-        |xxxxxx         *   *|
+        |xxxxxx @@@@@@@ *   *|
         ----------------------
         
         enter command: B 10 3 o
@@ -105,12 +107,15 @@ There could be 2 ways of working with drawing shell
         x must be an integer in a range [1..20] and
         y must be an integer in a range [1..2] and
         c must be a non-space and a non-control symbol from UTF-8 range.
+
+        enter command: SET verticalBorder #
+        enter command: SET horizontalBorder $
         
-        enter command: B 10 2 o
-        ----------------------
-        |ooooooooooooooo*****|
-        |xxxxxxooooooooo*   *|
-        ----------------------
+        enter command: B 10 1 o
+        $$$$$$$$$$$$$$$$$$$$$$
+        #ooooooooooooooo*****#
+        #xxxxxxo@@@@@@@o*   *#
+        $$$$$$$$$$$$$$$$$$$$$$
         enter command: Q
 
 ## Additional features and limitations
@@ -146,8 +151,6 @@ There could be 2 ways of working with drawing shell
 
 ### General shell related suggestions
 1. Properties (shell variables) support to keep some setting. For example it could be applied for
-   - Symbols to use for horizontal and vertical boundaries instead of default `-` and `|`
-   - Symbols to use for line/rectangles drawings.
    - `BRIEF`, `VERBOSE` commands to set property which could be used to show/hide
      additional information/warnings while application work.
    - Lots of other settings like history file path, usage of highlighting or not.
