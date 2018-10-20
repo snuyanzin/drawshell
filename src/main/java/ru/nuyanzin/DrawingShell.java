@@ -81,6 +81,8 @@ public final class DrawingShell {
                 DrawingShell.this, commands, "H"));
             put("L", new ReflectiveCommandHandler<>(
                 DrawingShell.this, commands, "L"));
+            put("P", new ReflectiveCommandHandler<>(
+                DrawingShell.this, commands, "P"));
             put("R", new ReflectiveCommandHandler<>(
                 DrawingShell.this, commands, "R"));
             put("SET", new ReflectiveCommandHandler<>(

@@ -6,6 +6,7 @@ package ru.nuyanzin.properties;
 public enum DrawingShellPropertiesEnum implements DrawingShellProperty {
 
   HORIZONTAL_BORDER("horizontalBorder", Type.CHAR, '-'),
+  SHOW_CANVAS_AFTER_COMMAND("showCanvasAfterCommand", Type.BOOLEAN, true),
   SHOW_ELAPSED_TIME("showElapsedTime", Type.BOOLEAN, true),
   SHOW_NESTED_ERRS("showNestedErrs", Type.BOOLEAN, false),
   SHOW_WARNINGS("showWarnings", Type.BOOLEAN, true),

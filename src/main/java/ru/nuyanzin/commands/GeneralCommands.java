@@ -13,6 +13,7 @@ import ru.nuyanzin.DrawingShell;
 import ru.nuyanzin.DrawingShellOpts;
 import ru.nuyanzin.Loc;
 import ru.nuyanzin.canvas.Canvas;
+import ru.nuyanzin.properties.DrawingShellPropertiesEnum;
 
 /**
  * Class for general commands.
@@ -128,8 +129,8 @@ public final class GeneralCommands implements Commands {
       shell.output(commandBUsageMessage);
       return;
     }
-    canvas.fill(x, args[1], parts[parts.length - 1].charAt(0), isB4)
-        .printTo(shell.getOutput());
+    canvas.fill(x, args[1], parts[parts.length - 1].charAt(0), isB4);
+    printCanvas(canvas);
   }
 
   /**
@@ -162,7 +163,21 @@ public final class GeneralCommands implements Commands {
       return;
     }
     shell.createBoard(w, h);
-    shell.getCanvas().printTo(shell.getOutput());
+    printCanvas(shell.getCanvas());
+  }
+
+  /**
+   * Command P to print current canvas.
+   *
+   * @param line full command line
+   */
+  public void p(final String line) throws IOException {
+    Canvas canvas = shell.getCanvas();
+    if (canvas == null) {
+      shell.output(Loc.getLocMessage("canvas-required"));
+      return;
+    }
+    canvas.printTo(shell.getOutput());
   }
 
   /**
@@ -209,11 +224,18 @@ public final class GeneralCommands implements Commands {
       shell.output(Loc.getLocMessage("draw-line-not-supported"));
     } else {
       if (parts.length == 4) {
-        canvas.drawLine(x1, y1, x2, y2).printTo(shell.getOutput());
+        canvas.drawLine(x1, y1, x2, y2);
       } else {
-        canvas.drawLine(x1, y1, x2, y2, parts[4].charAt(0))
-            .printTo(shell.getOutput());
+        canvas.drawLine(x1, y1, x2, y2, parts[4].charAt(0));
       }
+      printCanvas(canvas);
+    }
+  }
+
+  private void printCanvas(Canvas canvas) throws IOException {
+    if (shell.getOpts()
+        .getBoolean(DrawingShellPropertiesEnum.SHOW_CANVAS_AFTER_COMMAND)) {
+      canvas.printTo(shell.getOutput());
     }
   }
 
@@ -257,13 +279,12 @@ public final class GeneralCommands implements Commands {
       return;
     }
     if (parts.length == 4) {
-      canvas.drawRectangle(args[0], args[1], args[2], args[3])
-          .printTo(shell.getOutput());
+      canvas.drawRectangle(args[0], args[1], args[2], args[3]);
     } else {
       canvas.drawRectangle(
-          args[0], args[1], args[2], args[3], parts[4].charAt(0))
-              .printTo(shell.getOutput());
+          args[0], args[1], args[2], args[3], parts[4].charAt(0));
     }
+    printCanvas(canvas);
   }
 
   /**

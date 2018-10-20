@@ -52,7 +52,8 @@ It also depends on number of colors in use. The table below is made for 3 colors
 | `B x y c` | Alias for `B4`. |
 | `B4 x y c` | Fill the entire area connected to `(x, y)` and having the same colour as `(x, y)` with colour `c`. 4-dots way of filling is used i.e. only side connections are taken into account while only corner connections will skipped. |
 | `B8 x y c` | Fill the entire area connected to `(x, y)` and having the same colour as `(x, y)` with colour `c`. 8-dots way of filling is used i.e. both side and corner connections are taken into account. |
-| `SET` | Show all existing properties with its values. |
+| `P` | Print current canvas. |
+| `SET` | Show all existing properties with their values. |
 | `SET p v` | Assign property `p` value `v`. |
 | `Q` | Quit the program. |
                         
@@ -168,10 +169,7 @@ There could be 2 ways of working with drawing shell
 1. Add more drawing related operations like any line (not only horizontal or vertical),
    circle, triangle, filled rectangles and other shapes, being able to fill not only area
    with the same but with the similar colours.
-2. Add possibility of run several commands without canvas output between them.
-   At least it makes sense for the case of large canvas where each operation including output
-   becomes more time consuming.
-3. Being able to save the current state of canvas and load it later from the file or other source.
+2. Being able to save the current state of canvas and load it later from the file or other source.
 ### Other
 1. Currently there is a limitation of `Integer.MAX_VALUE` (and environment/jvm heap/etc.) for width or height of canvas.
    It could be increased with increasing memory but anyway it will require
