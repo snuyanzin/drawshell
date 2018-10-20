@@ -5,13 +5,11 @@ package ru.nuyanzin.properties;
  */
 public enum DrawingShellPropertiesEnum implements DrawingShellProperty {
 
-  HORIZONTAL_BORDER("horizontalBorder", Type.CHAR, '-'),
+  HORIZONTAL_BORDER("hBorder", Type.CHAR, '-'),
+  DEFAULT_DRAW_CHAR("defaultDrawChar", Type.CHAR, 'x'),
+  DEFAULT_EMPTY_CHAR("defaultEmptyChar", Type.CHAR, ' '),
   SHOW_CANVAS_AFTER_COMMAND("showCanvasAfterCommand", Type.BOOLEAN, true),
-  SHOW_ELAPSED_TIME("showElapsedTime", Type.BOOLEAN, true),
-  SHOW_NESTED_ERRS("showNestedErrs", Type.BOOLEAN, false),
-  SHOW_WARNINGS("showWarnings", Type.BOOLEAN, true),
-  VERBOSE("verbose", Type.BOOLEAN, false),
-  VERTICAL_BORDER("verticalBorder", Type.CHAR, '|');
+  VERTICAL_BORDER("vBorder", Type.CHAR, '|');
 
   private final String propertyName;
   private final Type type;

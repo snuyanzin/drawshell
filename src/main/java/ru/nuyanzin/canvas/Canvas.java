@@ -26,17 +26,7 @@ public class Canvas {
    */
   private static final int STRING_LENGTH_FOR_FLUSHING = 5000000;
 
-  /**
-   * Default symbol to draw lines and rectangles.
-   */
-  private static final char DEFAULT_LINE_CHAR = 'x';
-
   private final DrawingShellOpts drawingShellOpts;
-
-  /**
-   * Default symbol for initial background.
-   */
-  private static final char DEFAULT_EMPTY_CHAR = ' ';
 
   /**
    * Map of colors to layers. Each color exists on its own layer.
@@ -55,10 +45,17 @@ public class Canvas {
   public Canvas(final int width, final int height, DrawingShellOpts opts) {
     this.height = height;
     this.width = width;
-    colorToLayerMap = new HashMap<>();
-    colorToLayerMap.put(DEFAULT_LINE_CHAR, new Layer(width, height));
-    colorToLayerMap.put(DEFAULT_EMPTY_CHAR, new EmptyLayer(width, height));
     this.drawingShellOpts = opts;
+    colorToLayerMap = new HashMap<>();
+    colorToLayerMap.put(
+        drawingShellOpts.getChar(
+            DrawingShellPropertiesEnum.DEFAULT_DRAW_CHAR),
+        new Layer(width, height));
+    colorToLayerMap.put(
+        drawingShellOpts.getChar(
+            DrawingShellPropertiesEnum.DEFAULT_EMPTY_CHAR),
+        new EmptyLayer(width, height));
+
   }
 
   /**
@@ -140,7 +137,7 @@ public class Canvas {
   /**
    * Draw horizontal or vertical (based on points coordinates analysis) line
    * on the canvas from the point (x, y1) to (x, y2) with
-   * symbol {@link Canvas#DEFAULT_LINE_CHAR}.
+   * symbol {@link DrawingShellPropertiesEnum#DEFAULT_DRAW_CHAR}.
    * If any point of the line is out of canvas this point will
    * not be drawn while all points presenting on the canvas will be drawn
    *
@@ -154,13 +151,14 @@ public class Canvas {
                          final int y1,
                          final int x2,
                          final int y2) {
-    return drawLine(x1, y1, x2, y2, DEFAULT_LINE_CHAR);
+    return drawLine(x1, y1, x2, y2,
+        drawingShellOpts.getChar(DrawingShellPropertiesEnum.DEFAULT_DRAW_CHAR));
   }
 
   /**
    * Draw rectangle on the canvas
    * with the top left point (x1, y1) and bottom right point (x2, y2)
-   * with symbol {@link Canvas#DEFAULT_LINE_CHAR}.
+   * with symbol {@link DrawingShellPropertiesEnum#DEFAULT_DRAW_CHAR}.
    * If any point of the rectangle is out of canvas this point will
    * not be drawn while all points presenting on the canvas will be drawn
    *
@@ -183,7 +181,7 @@ public class Canvas {
   /**
    * Draw rectangle on the canvas
    * with the top left point (x1, y1) and bottom right point (x2, y2)
-   * with symbol {@link Canvas#DEFAULT_LINE_CHAR}.
+   * with symbol {@link DrawingShellPropertiesEnum#DEFAULT_DRAW_CHAR}.
    * If any point of the rectangle is out of canvas this point will
    * not be drawn while all points presenting on the canvas will be drawn
    *
@@ -361,7 +359,9 @@ public class Canvas {
       BitSet currentLine = color2LineEntry == null
           ? null : color2LineEntry.getValue().getLine(lineNumber);
       if (currentLine == null) {
-        sb.append(DEFAULT_EMPTY_CHAR);
+        sb.append(
+            drawingShellOpts.getChar(
+                DrawingShellPropertiesEnum.DEFAULT_EMPTY_CHAR));
         cursor++;
       } else {
         int next = currentLine.cardinality() == width

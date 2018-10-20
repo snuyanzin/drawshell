@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -305,9 +306,13 @@ public final class GeneralCommands implements Commands {
       Properties props = shell.getOpts().toProperties();
       Set<String> keys = new TreeSet<>(((Map) props).keySet());
       for (String key : keys) {
-        shell.output(
-            key.substring(DrawingShellOpts.PROPERTY_PREFIX.length())
-                + "\t" + props.getProperty(key));
+        final String substring =
+            key.substring(DrawingShellOpts.PROPERTY_PREFIX.length());
+        String value = props.getProperty(key);
+        shell.output(substring
+                + String.format(Locale.ROOT,
+            "%1$" + (50 - substring.length() - (10 - value.length())) + "s",
+            value));
       }
     } else {
       shell.getOpts().set(parts[0], parts[1]);

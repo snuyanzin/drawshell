@@ -199,6 +199,9 @@ public class DrawingShellOpts {
 
   public char getChar(DrawingShellProperty key) {
     if (key.type() == DrawingShellProperty.Type.CHAR) {
+      System.out.println(key + " " + key.getClass());
+      System.out.println(
+          propertiesMap.getOrDefault(key, key.defaultValue()).getClass());
       return (char) propertiesMap.getOrDefault(key, key.defaultValue());
     } else {
       throw new IllegalArgumentException(
@@ -237,6 +240,12 @@ public class DrawingShellOpts {
     Object valueToSet = value;
     String strValue;
     switch (key.type()) {
+    case CHAR:
+      strValue = value instanceof String
+          ? (String) value : String.valueOf(value);
+      valueToSet = DrawingShellProperty.DEFAULT.equalsIgnoreCase(strValue)
+          ? key.defaultValue() : strValue.charAt(0);
+      break;
     case STRING:
       strValue = value instanceof String
           ? (String) value : String.valueOf(value);

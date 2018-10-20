@@ -56,6 +56,17 @@ It also depends on number of colors in use. The table below is made for 3 colors
 | `SET` | Show all existing properties with their values. |
 | `SET p v` | Assign property `p` value `v`. |
 | `Q` | Quit the program. |
+                  
+### Available properties (could be changed via `SET`)
+
+| Property | Default value | Description |
+| ------- | -------------- | ---------- |
+| `hBorder` | `-` | Symbol for horizontal border. |
+| `defaultDrawChar` | `x` | Default symbol to draw lines and rectangles. |
+| `defaultEmptyChar` | ` ` | Default symbol to draw empty areas. |
+| `showCanvasAfterCommand` | `true` | Print or not print canvas after draw command. |
+| `vBorder` | &#124; | Symbol for vertical border. |
+
                         
 ## Demos
 
