@@ -120,10 +120,15 @@ There could be 2 ways of working with drawing shell
         y must be an integer in a range [1..2] and
         c must be a non-space and a non-control symbol from UTF-8 range.
 
-        enter command: SET verticalBorder #
-        enter command: SET horizontalBorder $
-        
         enter command: B 10 1 o
+        ----------------------
+        |ooooooooooooooo*****|
+        |xxxxxxo@@@@@@@o*   *|
+        ----------------------
+
+        enter command: SET vBorder #
+        enter command: SET hBorder $
+        enter command: P        
         $$$$$$$$$$$$$$$$$$$$$$
         #ooooooooooooooo*****#
         #xxxxxxo@@@@@@@o*   *#

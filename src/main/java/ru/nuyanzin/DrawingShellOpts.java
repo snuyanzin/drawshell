@@ -199,9 +199,6 @@ public class DrawingShellOpts {
 
   public char getChar(DrawingShellProperty key) {
     if (key.type() == DrawingShellProperty.Type.CHAR) {
-      System.out.println(key + " " + key.getClass());
-      System.out.println(
-          propertiesMap.getOrDefault(key, key.defaultValue()).getClass());
       return (char) propertiesMap.getOrDefault(key, key.defaultValue());
     } else {
       throw new IllegalArgumentException(
