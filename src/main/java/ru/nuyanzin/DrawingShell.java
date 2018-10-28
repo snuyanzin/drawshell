@@ -103,20 +103,24 @@ public final class DrawingShell {
     if (args == null || args.length == 0) {
       shell.start(System.in);
     } else if (args.length == 1) {
-      Path absolutePathToFile = Paths.get(args[0]).toAbsolutePath();
-      if (Files.exists(absolutePathToFile)) {
-        try (FileInputStream fis =
-                 new FileInputStream(absolutePathToFile.toFile())) {
-          shell.start(fis);
-        } catch (IOException e) {
-          shell.handleException(e);
-        }
-      } else {
-        shell.output(Loc.getLocMessage("file-not-exist",
-            absolutePathToFile.toString()));
-      }
+      startShellWithFileStream(args[0], shell);
     } else {
       shell.output(Loc.getLocMessage("usage-start"));
+    }
+  }
+
+  private static void startShellWithFileStream(String arg, DrawingShell shell) {
+    Path absolutePathToFile = Paths.get(arg).toAbsolutePath();
+    if (Files.exists(absolutePathToFile)) {
+      try (FileInputStream fis =
+               new FileInputStream(absolutePathToFile.toFile())) {
+        shell.start(fis);
+      } catch (IOException e) {
+        shell.handleException(e);
+      }
+    } else {
+      shell.output(Loc.getLocMessage("file-not-exist",
+          absolutePathToFile.toString()));
     }
   }
 
@@ -150,14 +154,8 @@ public final class DrawingShell {
           if (trimmedLine.isEmpty()) {
             continue;
           }
-          // currently commands are simple and do not contain spaces
-          // in case the requirement change the logic should be adapted
-          int firstSpaceIndex = trimmedLine.indexOf(" ");
-          String commandName = trimmedLine;
-          if (firstSpaceIndex != -1) {
-            commandName = trimmedLine.substring(0, firstSpaceIndex);
-          }
-          executeCommand(fullCommandLine, trimmedLine, commandName);
+          executeCommand(
+              fullCommandLine, trimmedLine, getCommandName(trimmedLine));
         } catch (Throwable t) {
           handleException(t);
           output(getPrompt(), false);
@@ -166,6 +164,17 @@ public final class DrawingShell {
     } catch (IOException e) {
       handleException(e);
     }
+  }
+
+  private String getCommandName(String trimmedLine) {
+    // currently commands are simple and do not contain spaces
+    // in case the requirement change the logic should be adapted
+    int firstSpaceIndex = trimmedLine.indexOf(" ");
+    String commandName = trimmedLine;
+    if (firstSpaceIndex != -1) {
+      commandName = trimmedLine.substring(0, firstSpaceIndex);
+    }
+    return commandName;
   }
 
   /**
