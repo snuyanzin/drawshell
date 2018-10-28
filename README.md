@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/snuyanzin/drawshell.svg?branch=master)](https://travis-ci.org/snuyanzin/drawshell)
+
 # Drawing shell
 
 ## Building & Start
