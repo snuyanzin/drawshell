@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/snuyanzin/drawshell.svg?branch=master)](https://travis-ci.org/snuyanzin/drawshell)
-
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/snuyanzin/drawshell?branch=master&svg=true)](https://ci.appveyor.com/project/snuyanzin/drawshell)
 # Drawing shell
 
 ## Building & Start
