@@ -35,7 +35,7 @@
     <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
     <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
     <maven-site-plugin.version>3.7</maven-site-plugin.version>
-    <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
+    <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
 
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -76,6 +76,9 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven-surefire-plugin.version}</version>
+          <configuration>
+            <useManifestOnlyJar>false</useManifestOnlyJar>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
