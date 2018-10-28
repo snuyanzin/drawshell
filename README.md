@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/snuyanzin/drawshell.svg?branch=master)](https://travis-ci.org/snuyanzin/drawshell)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/snuyanzin/drawshell?branch=master&svg=true)](https://ci.appveyor.com/project/snuyanzin/drawshell)
+[![DepShield Badge](https://depshield.sonatype.org/badges/snuyanzin/drawshell/depshield.svg)](https://depshield.github.io)
 # Drawing shell
 
 ## Building & Start
