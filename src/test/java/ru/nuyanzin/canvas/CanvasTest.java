@@ -428,7 +428,7 @@ public class CanvasTest extends TestCase {
   /**
    * The tests creates a maze and check if fill works correctly
    * while calling fill (4-dots approach) at each point.
-   * (except 3 points with color '!', '#', '&' which are required
+   * (except 3 points with color '!', '#', '&amp;' which are required
    * to be sure that the test work ok in case of more than 2 colors)
    */
   public void testFillB4Maze() {
@@ -554,7 +554,7 @@ public class CanvasTest extends TestCase {
   /**
    * The tests creates a maze and check if fill works correctly
    * while calling fill (8-dots approach) at each point.
-   * (except 3 points with color '!', '#', '&' which are required
+   * (except 3 points with color '!', '#', '&amp;' which are required
    * to be sure that the test work ok in case of more than 2 colors)
    */
   public void testB8FillMaze() {

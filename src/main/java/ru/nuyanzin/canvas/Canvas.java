@@ -247,7 +247,7 @@ public class Canvas {
   /**
    * Fill the point (x, y) and all its neighbours with
    * the same char content with a new char c.
-   * The way of filling is defined by {@param isB4}.
+   * The way of filling is defined by {@code isB4}.
    * If point (x, y) is out of canvas this point will
    * not fill anything.
    *
@@ -309,10 +309,11 @@ public class Canvas {
    * Print canvas representation to Appendable which could be a stream.
    * The method is used instead of toString()
    * as it could be used with streams and as a result
-   * will not hold in memory big objects => OutOfMemoryError
+   * will not hold in memory big objects =&gt; OutOfMemoryError
    * (in case of big canvas like 20000x20000 and higher).
    *
    * @param appendable the Appendable to what print canvas
+   * @throws IOException If an I/O error occurs
    */
   public void printTo(final Appendable appendable) throws IOException {
     StringBuilder sb = new StringBuilder(STRING_LENGTH_FOR_FLUSHING);
@@ -346,7 +347,7 @@ public class Canvas {
    *
    * @param appendable appendable to print line
    * @param lineNumber the number of a line which should be printed
-   * @throws IOException
+   * @throws IOException If an I/O error occurs
    */
   private StringBuilder lineToAppendable(Appendable appendable,
                                          StringBuilder sb,

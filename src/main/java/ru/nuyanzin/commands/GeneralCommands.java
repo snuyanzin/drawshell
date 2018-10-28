@@ -55,6 +55,7 @@ public final class GeneralCommands implements Commands {
    * By default there is used a 4-dots way
    *
    * @param line full command line
+   * @throws IOException If an I/O error occurs
    */
   public void b(final String line) throws IOException {
     b4(line, "B");
@@ -65,6 +66,7 @@ public final class GeneralCommands implements Commands {
    *
    * @param line        full command line
    * @param commandName command name to execute
+   * @throws IOException If an I/O error occurs
    */
   private void b4(final String line,
                   final String commandName) throws IOException {
@@ -75,6 +77,7 @@ public final class GeneralCommands implements Commands {
    * Command B filling area connected to (x, y) in 4-dots way.
    *
    * @param line full command line
+   * @throws IOException If an I/O error occurs
    */
   public void b4(final String line) throws IOException {
     bCommand(line, "B4", true);
@@ -84,6 +87,7 @@ public final class GeneralCommands implements Commands {
    * Command B filling area connected to (x, y) in 8-dots way.
    *
    * @param line full command line
+   * @throws IOException If an I/O error occurs
    */
   public void b8(final String line) throws IOException {
     bCommand(line, "B8", false);
@@ -97,6 +101,7 @@ public final class GeneralCommands implements Commands {
    * @param isB4        specify if 4-dots way should be used.
    *                    if true then 4-dots way will be used
    *                    if false then 8-dots way will be used
+   * @throws IOException If an I/O error occurs
    */
   private void bCommand(final String line,
                         final String commandName,
@@ -138,6 +143,7 @@ public final class GeneralCommands implements Commands {
    * Command C for new canvas creation.
    *
    * @param line full command line
+   * @throws IOException If an I/O error occurs
    */
   public void c(final String line) throws IOException {
     String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
@@ -171,6 +177,7 @@ public final class GeneralCommands implements Commands {
    * Command P to print current canvas.
    *
    * @param line full command line
+   * @throws IOException If an I/O error occurs
    */
   public void p(final String line) throws IOException {
     Canvas canvas = shell.getCanvas();
@@ -194,6 +201,7 @@ public final class GeneralCommands implements Commands {
    * Command L for drawing horizontal and vertical lines on canvas.
    *
    * @param line full command line
+   * @throws IOException If an I/O error occurs
    */
   public void l(final String line) throws IOException {
     Canvas canvas = shell.getCanvas();
@@ -258,6 +266,7 @@ public final class GeneralCommands implements Commands {
    * Command R for drawing rectangles on canvas.
    *
    * @param line full command line
+   * @throws IOException If an I/O error occurs
    */
   public void r(final String line) throws IOException {
     Canvas canvas = shell.getCanvas();
@@ -293,7 +302,7 @@ public final class GeneralCommands implements Commands {
    *
    * @param line full command line
    */
-  public void set(final String line) throws IOException {
+  public void set(final String line) {
     String[] parts = line.trim().split(COMMAND_OPTIONS_REGEX);
     String commandSETUsageMessage = Loc.getLocMessage("usage-set");
     // length 2 arguments are required
@@ -310,7 +319,7 @@ public final class GeneralCommands implements Commands {
             key.substring(DrawingShellOpts.PROPERTY_PREFIX.length());
         String value = props.getProperty(key);
         shell.output(substring
-                + String.format(Locale.ROOT,
+            + String.format(Locale.ROOT,
             "%1$" + (50 - substring.length() - (10 - value.length())) + "s",
             value));
       }

@@ -95,6 +95,7 @@ public final class DrawingShell {
 
   /**
    * @param args startup args
+   * @throws UnsupportedEncodingException If the named encoding is not supported
    */
   public static void main(final String[] args)
       throws UnsupportedEncodingException {

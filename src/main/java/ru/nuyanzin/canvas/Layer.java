@@ -385,6 +385,7 @@ public class Layer {
    * @param destination  array of destination to check
    * @param downBoundary down boundary to check
    * @param upBoundary   up boundary to check
+   * @param isB4         if B4 approach of filling or not
    * @return index of source line if there is a point
    * to process or -1 otherwise.
    */
