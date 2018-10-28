@@ -287,11 +287,6 @@ public class CanvasTest extends TestCase {
         + "-------\n", cnvs.toString());
   }
 
-  public void testFill1() {
-    Canvas cnvs = new Canvas(Integer.MAX_VALUE, 1, OPTS);
-    cnvs.fill(Integer.MAX_VALUE, 1, '.');
-  }
-
   public void testFill() {
     Canvas cnvs = new Canvas(1, 1, OPTS);
     // Fill one element canvas
