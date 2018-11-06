@@ -128,7 +128,7 @@ public class DrawingShellTest {
   @Test
   public void testCCommand() {
     File tmpCommandFile = createTmpCommandFile("testCCommand",
-        "             C           2          3             ");
+        "C 2 3");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -149,7 +149,7 @@ public class DrawingShellTest {
   @Test
   public void testCCommandWrongArguments() {
     File tmpCommandFile = createTmpCommandFile("testCCommandWrongArguments",
-        "             C           -2          A             ");
+        "C -2 A ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -168,7 +168,7 @@ public class DrawingShellTest {
   public void testCCommandWrongNumberOfArguments() {
     File tmpCommandFile = createTmpCommandFile(
         "testCCommandWrongNumberOfArguments",
-        "             C 1 1          12 20 ds2          A      213 213       ");
+        "C 1 1 12 20 ds2 A 213 213");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -187,8 +187,8 @@ public class DrawingShellTest {
   public void testBCommandForPointOutOfCanvas() {
     File tmpCommandFile = createTmpCommandFile(
         "testBCommandForPointOutOfCanvas",
-        "             C           2          3       ",
-        "    B           12          23       q ");
+        "C 2 3",
+        "B 12 23 q ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -205,8 +205,8 @@ public class DrawingShellTest {
   @Test
   public void testBCommandWithoutCharacter() {
     File tmpCommandFile = createTmpCommandFile("testBCommandWithoutCharacter",
-        "             C           2          3       ",
-        "    B           1          2      ");
+        "C 2 3",
+        "B 1 2");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -223,8 +223,8 @@ public class DrawingShellTest {
   @Test
   public void testBCommandWithWrongCharacter() {
     File tmpCommandFile = createTmpCommandFile("testBCommandWithWrongCharacter",
-        "             C           2          3       ",
-        "    B4           1          2     qwe ");
+        "C 2 3",
+        "B4 1 2 qwe ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -242,7 +242,7 @@ public class DrawingShellTest {
   @Test
   public void testBCommandWithoutCanvas() {
     File tmpCommandFile = createTmpCommandFile("testBCommandWithoutCanvas",
-        "             B           2          3      @     ");
+        "B 2 3 @");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -260,9 +260,9 @@ public class DrawingShellTest {
   public void testTwiceBCommand() {
     File tmpCommandFile = createTmpCommandFile("testTwiceBCommand",
         "C 50 2 ",
-        "             B           1          1      -     ",
-        "             B           2          2      @     ",
-        "             B           5          1      @     ");
+        "B 1 1 -",
+        "B 2 2 @",
+        "B 5 1 @");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -284,9 +284,9 @@ public class DrawingShellTest {
   public void testFillOtherPartWithExistingSymbol() {
     File tmpCommandFile = createTmpCommandFile("testTwiceBCommand",
         "C 50 2 ",
-        "             L           20          1      20  2   ",
-        "             B           2          2      @     ",
-        "             B           25          1      @     ");
+        "L 20 1 20 2",
+        "B 2 2 @",
+        "B 25 1 @");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -308,11 +308,11 @@ public class DrawingShellTest {
   public void testB8Command() {
     File tmpCommandFile = createTmpCommandFile("testTwiceBCommand",
         "C 9 2 ",
-        "             L           1          1      1   1  ",
-        "             L           2          2      2   2  ",
-        "             L           3          1      5   1  ",
-        "             L           6          2      9   2  ",
-        "             B8           1          2      @     ");
+        "L 1 1 1 1",
+        "L 2 2 2 2",
+        "L 3 1 5 1",
+        "L 6 2 9 2",
+        "B8 1 2 @");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -338,12 +338,38 @@ public class DrawingShellTest {
     String formatted2000 = numberFormat.format(2000);
     File tmpCommandFile = createTmpCommandFile("testBCommandForMillionsPoints",
         "C " + formatted2000 + " " + formatted2000,
-        "             L           2     2 2    2          ",
-        "             B           1          1      @     ");
+        "L 2 2 2 2",
+        "B 1 1 @");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
           CoreMatchers.not(CoreMatchers.containsString("Error")));
+    } catch (Exception e) {
+      // fail
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * Test for commands around with spaces
+   */
+  @Test
+  public void testCommandsAroundWithSpaces() {
+    File tmpCommandFile = createTmpCommandFile("testCommandsAroundWithSpaces",
+        "        C              4        3 ",
+        "        L        1        2        3       2        ",
+        "  L   2      2  4            2         ",
+        "           R       1       1          21       12  ",
+        "      B8        1          2     @     ");
+    try {
+      DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
+      assertThat(os.toString("UTF8"),
+          CoreMatchers.containsString(
+              "------\n"
+                  + "|@@@@|\n"
+                  + "|@@@@|\n"
+                  + "|@   |\n"
+                  + "------"));
     } catch (Exception e) {
       // fail
       throw new RuntimeException(e);
@@ -377,8 +403,8 @@ public class DrawingShellTest {
   public void testPossibilityToWorkAfterOOM() {
     File tmpCommandFile = createTmpCommandFile("testPossibilityToWorkAfterOOM",
         "C " + Integer.MAX_VALUE + " " + Integer.MAX_VALUE,
-        "             C           3          3      ",
-        "            B           2          2   :   ");
+        "C 3 3",
+        "B 2 2 :");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -399,7 +425,7 @@ public class DrawingShellTest {
   @Test
   public void testHCommand() {
     File tmpCommandFile = createTmpCommandFile("testHCommand",
-        "             H ");
+        "H ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -416,7 +442,7 @@ public class DrawingShellTest {
   @Test
   public void testLCommandWithoutCanvas() {
     File tmpCommandFile = createTmpCommandFile("testLCommandWithoutCanvas",
-        "             L           -2          3      1    -2 ");
+        "L -2 3 1 -2 ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -434,8 +460,8 @@ public class DrawingShellTest {
   public void testLCommandWithWrongNumberOfArguments() {
     File tmpCommandFile = createTmpCommandFile(
         "testLCommandWithWrongNumberOfArguments",
-        "             C           2          3       ",
-        "    L           1          2      ");
+        "C 2 3",
+        "L 1 2");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -453,8 +479,8 @@ public class DrawingShellTest {
   public void testLCommandWrongTypeOfArguments() {
     File tmpCommandFile = createTmpCommandFile(
         "testLCommandWrongTypeOfArguments",
-        "             C           2          3       ",
-        "    L           A          2      A  2 ");
+        "C 2 3",
+        "L A 2 A 2 ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -471,8 +497,8 @@ public class DrawingShellTest {
   @Test
   public void testLCommandForNonHorizontalNonVertical() {
     File tmpCommandFile = createTmpCommandFile("testLCommand",
-        "             C           3          3       ",
-        "    L           -1          223      3  231 ");
+        "C 3 3",
+        "L -1 223 3 231 ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -490,8 +516,8 @@ public class DrawingShellTest {
   @Test
   public void testLCommand() {
     File tmpCommandFile = createTmpCommandFile("testLCommand",
-        "             C           3          3       ",
-        "    L           -1          2      3  2 ");
+        "C 3 3",
+        "L -1 2 3 2 ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -513,7 +539,7 @@ public class DrawingShellTest {
   @Test
   public void testRCommandWithoutCanvas() {
     File tmpCommandFile = createTmpCommandFile("testRCommandWithoutCanvas",
-        "             R           -2          3      1    -2 ");
+        "R -2 3 1 -2 ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -532,8 +558,8 @@ public class DrawingShellTest {
   public void testRCommandWithWrongNumberOfArguments() {
     File tmpCommandFile = createTmpCommandFile(
         "testRCommandWithWrongNumberOfArguments",
-        "             C           2          3       ",
-        "    R           1          2      ");
+        "C 2 3",
+        "R 1 2");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -551,8 +577,8 @@ public class DrawingShellTest {
   public void testRCommandWrongTypeOfArguments() {
     File tmpCommandFile = createTmpCommandFile(
         "testRCommandWrongTypeOfArguments",
-        "             C           2          3       ",
-        "    R           A          2      A  2 ");
+        "C 2 3",
+        "R A 2 A 2 ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -569,8 +595,8 @@ public class DrawingShellTest {
   @Test
   public void testRCommand() {
     File tmpCommandFile = createTmpCommandFile("testRCommand",
-        "             C           2          3       ",
-        "    R           1          1      1  1 ");
+        "C 2 3",
+        "R 1 1 1 1 ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -593,8 +619,8 @@ public class DrawingShellTest {
   public void testRCommandWithPartiallyOutRectangle() {
     File tmpCommandFile = createTmpCommandFile(
         "testRCommandWithPartiallyOutRectangle",
-        "             C           2          3       ",
-        "    R           2          2      3  3 ");
+        "C 2 3",
+        "R 2 2 3 3 ");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
@@ -634,7 +660,7 @@ public class DrawingShellTest {
   @Test
   public void testExit() {
     File tmpCommandFile = createTmpCommandFile("testExit",
-        "             Q             ");
+        "Q");
     try {
       DrawingShell.main(new String[]{tmpCommandFile.getAbsolutePath()});
       assertThat(os.toString("UTF8"),
