@@ -3,16 +3,21 @@ package ru.nuyanzin.canvas;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
 import ru.nuyanzin.DrawingShellOpts;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for direct drawing on {@link Canvas}.
  * No validation is checked here, only drawing.
  */
-public class CanvasTest extends TestCase {
+public class CanvasTest {
 
   private static final DrawingShellOpts OPTS = new DrawingShellOpts(null);
+
+  @Test
   public void testToString() {
     // 0 is not allowed from the shell but here there is no validation
     assertEquals("--\n--\n", new Canvas(0, 0, OPTS).toString());
@@ -23,6 +28,7 @@ public class CanvasTest extends TestCase {
         new Canvas(2, 2, OPTS).toString());
   }
 
+  @Test
   public void testDrawLineOutCanvas() {
     Canvas cnvs = new Canvas(3, 3, OPTS);
     // Before drawing
@@ -46,6 +52,7 @@ public class CanvasTest extends TestCase {
         + "-----\n", cnvs.toString());
   }
 
+  @Test
   public void testEquivalentsLines() {
     // It does not matter from which to
     // which point the line is going to be drawn
@@ -66,6 +73,7 @@ public class CanvasTest extends TestCase {
             .drawRectangle(5, 4, Integer.MIN_VALUE, 4).toString());
   }
 
+  @Test
   public void testLineAsAPoint() {
     // A line with the same two points should be a point
     Canvas cnvs = new Canvas(3, 3, OPTS);
@@ -101,6 +109,7 @@ public class CanvasTest extends TestCase {
         + "-----\n", cnvs.toString());
   }
 
+  @Test
   public void testDrawLine() {
     Canvas cnvs = new Canvas(4, 4, OPTS);
     cnvs.drawLine(1, 1, 2, 1);
@@ -134,6 +143,7 @@ public class CanvasTest extends TestCase {
         + "------\n", cnvs.toString());
   }
 
+  @Test
   public void testDrawRectangleOutCanvas() {
     Canvas cnvs = new Canvas(3, 3, OPTS);
     // Before drawing
@@ -158,6 +168,7 @@ public class CanvasTest extends TestCase {
         + "-----\n", cnvs.toString());
   }
 
+  @Test
   public void testEquivalentsRectangles() {
     // It does not matter from which
     // to which point the rectangle is going to be drawn
@@ -185,6 +196,7 @@ public class CanvasTest extends TestCase {
         new Canvas(5, 5, OPTS).drawRectangle(4, 5, 1, 2).toString());
   }
 
+  @Test
   public void testRectangleAsAPoint() {
     // rectangle with the same two opposite corners should be a point
     Canvas cnvs = new Canvas(3, 3, OPTS);
@@ -220,6 +232,7 @@ public class CanvasTest extends TestCase {
         + "-----\n", cnvs.toString());
   }
 
+  @Test
   public void testDrawRectangleAsALine() {
     Canvas cnvs = new Canvas(5, 5, OPTS);
     cnvs.drawRectangle(1, 1, 2, 1);
@@ -248,6 +261,7 @@ public class CanvasTest extends TestCase {
         + "-------\n", cnvs.toString());
   }
 
+  @Test
   public void testDrawRectangles() {
     Canvas cnvs = new Canvas(5, 5, OPTS);
     cnvs.drawRectangle(Integer.MIN_VALUE, Integer.MIN_VALUE, 2, 2);
@@ -287,6 +301,7 @@ public class CanvasTest extends TestCase {
         + "-------\n", cnvs.toString());
   }
 
+  @Test
   public void testFill() {
     Canvas cnvs = new Canvas(1, 1, OPTS);
     // Fill one element canvas
@@ -346,6 +361,7 @@ public class CanvasTest extends TestCase {
         + "-----\n", cnvs.toString());
   }
 
+  @Test
   public void testFillWithExistingColor() {
     Canvas cnvs = new Canvas(3, 3, OPTS);
     cnvs.drawLine(2, 1, 2, 3);
@@ -373,6 +389,7 @@ public class CanvasTest extends TestCase {
    * it applies B8 (8-dots way) filling to verify
    * if the canvas filled correctly.
    */
+  @Test
   public void testB8Fill() {
     Canvas cnvs = new Canvas(6, 7, OPTS);
     cnvs.drawLine(1, 2, 1, 3);
@@ -431,6 +448,7 @@ public class CanvasTest extends TestCase {
    * (except 3 points with color '!', '#', '&amp;' which are required
    * to be sure that the test work ok in case of more than 2 colors)
    */
+  @Test
   public void testFillB4Maze() {
     int mazeWidth = 20;
     int mazeHeight = 20;
@@ -557,6 +575,7 @@ public class CanvasTest extends TestCase {
    * (except 3 points with color '!', '#', '&amp;' which are required
    * to be sure that the test work ok in case of more than 2 colors)
    */
+  @Test
   public void testB8FillMaze() {
     int mazeWidth = 20;
     int mazeHeight = 20;
@@ -697,6 +716,7 @@ public class CanvasTest extends TestCase {
    * The tests creates a chessboard and check if fill works correctly
    * while calling fill (8-dots approach) at each point.
    */
+  @Test
   public void testFillB8ChessBoard() {
     int chessBoardWidth = 8;
     int chessBoardHeight = 8;
@@ -791,6 +811,7 @@ public class CanvasTest extends TestCase {
    * The tests creates a board and check if fill works correctly
    * while calling fill (4-dots approach) at each non-blank point.
    */
+  @Test
   public void testFillB4Board() {
     Canvas cnvs = new Canvas(8, 8, OPTS);
     cnvs.drawLine(1, 1, 1, 1);
@@ -869,11 +890,11 @@ public class CanvasTest extends TestCase {
         canvas.fill(i, j, targetColor, isB4);
         final String message = "Check filling point (" + i + ", " + j
             + ") with color \"";
-        assertEquals(message + targetColor + "\"",
-            bucketFill.getExpectedResult(), canvas.toString());
+        assertEquals(bucketFill.getExpectedResult(), canvas.toString(),
+            message + targetColor + "\"");
         canvas.fill(i, j, color, isB4);
-        assertEquals(message + color + "'",
-            expectedInitialState, canvas.toString());
+        assertEquals(expectedInitialState, canvas.toString(),
+            message + color + "'");
       }
     }
   }

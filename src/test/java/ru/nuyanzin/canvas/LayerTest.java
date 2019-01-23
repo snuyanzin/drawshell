@@ -2,13 +2,15 @@ package ru.nuyanzin.canvas;
 
 import java.util.BitSet;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for {@link Layer} methods.
  * No validation is checked here.
  */
-public class LayerTest extends TestCase {
+public class LayerTest {
 
   /**
    * Check if search for firstSetIndexInARow works correct
@@ -19,6 +21,7 @@ public class LayerTest extends TestCase {
    * firstSetIndexInARow starting with 6 is 6
    * firstSetIndexInARow starting with 10 is 8
    */
+  @Test
   public void testGetFirstSetIndexInARow() {
     final int width = 30;
     final int height = 30;
@@ -79,6 +82,7 @@ public class LayerTest extends TestCase {
    * lastSetIndexInARow starting with 5 is 5
    * lastSetIndexInARow starting with 7 is 7
    */
+  @Test
   public void testGetLastSetIndexInARow() {
     final int width = 30;
     final int height = 30;
@@ -142,6 +146,7 @@ public class LayerTest extends TestCase {
    * getDownBoundary starting with 3 is 3
    * getDownBoundary starting with 4 is 3
    */
+  @Test
   public void testDownBoundary() {
     Layer layer = new Layer(3, 3);
     layer.drawHorizontalLine(1, 3, 1);
@@ -178,6 +183,7 @@ public class LayerTest extends TestCase {
    * getUpBoundary starting with 3 is 4
    * getUpBoundary starting with 4 is 4
    */
+  @Test
   public void testUpBoundary() {
     Layer layer = new Layer(5, 5);
     layer.drawHorizontalLine(1, 3, 1);
@@ -215,6 +221,7 @@ public class LayerTest extends TestCase {
    * With 8-dots approach {1, 3} from Source are diagonally connected
    * to {0, 2} from Destination and getLineToHandleAgain should return 1.
    */
+  @Test
   public void testGetLineToHandleAgain() {
     int height = 4;
     int width = 4;
@@ -241,6 +248,7 @@ public class LayerTest extends TestCase {
         sourceLayer.getLineToHandleAgain(destination, 0, 3, true));
   }
 
+  @Test
   public void testGetLineToHandleAgainChessBoardIssue() {
     int height = 8;
     int width = 8;

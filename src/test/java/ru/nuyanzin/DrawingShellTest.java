@@ -10,13 +10,13 @@ import java.nio.file.Paths;
 import java.text.NumberFormat;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ru.nuyanzin.canvas.Canvas;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Unit test for DrawingShell.
@@ -41,7 +41,7 @@ public class DrawingShellTest {
   private PrintStream testOutputStream;
 
 
-  @Before
+  @BeforeEach
   public void reassignOutput() {
     try {
       os = new ByteArrayOutputStream();
@@ -55,7 +55,7 @@ public class DrawingShellTest {
     }
   }
 
-  @After
+  @AfterEach
   public void reassignOutputBack() {
     try {
       System.setOut(originalSystemIn);
